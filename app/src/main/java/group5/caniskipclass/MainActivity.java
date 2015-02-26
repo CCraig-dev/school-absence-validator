@@ -4,14 +4,26 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    //todo default course values here, remove at later time and retrieve from storage instead
+    String[] courseList = {"Trends in SE", "Physics", "Calculus", "Computer Science", "English", "Web Development"};
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        ListView lv = (ListView) findViewById(R.id.courselist);
+
+        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.course_name, courseList));
     }
 
 
