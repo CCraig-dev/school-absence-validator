@@ -79,6 +79,11 @@ public class AddCourseActivity extends ActionBarActivity {
                     .show();
         } else {
 
+            Course newCourse = new Course(cName.getText().toString(),
+                    minGrade.getSelectedItem().toString(),
+                    Integer.parseInt(allowedAbsences.getText().toString()));
+            //todo add course to database
+
 
 
             finish();

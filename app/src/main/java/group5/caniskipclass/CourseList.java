@@ -9,8 +9,12 @@ public class CourseList {
 
     private ArrayList<Course> courses;
 
-    public void addNewCourse(Course c) {
+    public CourseList() {
+        this.courses = new ArrayList<>();
+    }
 
+    public void addNewCourse(Course c) {
+        courses.add(c);
     }
 
     public ArrayList<Course> getCourses() {

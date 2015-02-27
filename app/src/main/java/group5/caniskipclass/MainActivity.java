@@ -57,5 +57,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    public CourseList getCourseList() {
+        return courseList;
+    }
 }
