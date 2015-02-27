@@ -1,38 +1,37 @@
 package group5.caniskipclass;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Spinner;
 
 
-public class MainActivity extends ActionBarActivity {
-
-    //todo default course values here, remove at later time and retrieve from storage instead
-    String[] courseList = {"Trends in SE", "Physics", "Calculus", "Computer Science", "English", "Web Development"};
-
-
+public class CrudCourseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_crud_course);
 
 
-        ListView lv = (ListView) findViewById(R.id.courselist);
+        // populate the grades dropdown
+        Spinner gradeChoices = (Spinner) findViewById(R.id.grades_spinner);
 
-        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.course_name, courseList));
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.letter_grades_pm, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        gradeChoices.setAdapter(adapter);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        getMenuInflater().inflate(R.menu.main_activity_actions, menu);
+        getMenuInflater().inflate(R.menu.menu_crud_course, menu);
         return true;
     }
 
@@ -46,15 +45,8 @@ public class MainActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else if (id == R.id.action_add) {
-            //todo handle adding a course
-            Intent intent = new Intent(this, CrudCourseActivity.class);
-
-            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-
 }

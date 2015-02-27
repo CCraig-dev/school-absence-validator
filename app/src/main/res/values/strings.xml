@@ -1,7 +1,11 @@
 <resources>
-    <string name="app_name">CanISkipClass</string>
+    <string name="app_name">Can I Skip Class?</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_add">Add</string>
+    <string name="title_activity_crud_course">Add/Edit Course</string>
+    <string name="course_name_label">Course Name:</string>
+    <string name="course_min_grade_label">Minimum Grade:</string>
+    <string name="course_edit_confirm">Confirm</string>
 </resources>
