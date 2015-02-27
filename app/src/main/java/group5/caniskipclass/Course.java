@@ -14,23 +14,21 @@ public class Course {
     private int numAllowedAbscence;
     private double currentGrade;
     private double minimumGrade;
-    private ArrayList<Category> categories;
 
-    public void addNewCourse() {
+    public Course(String name, int numAllowedAbscence, double minimumGrade) {
+        this.name = name;
+        this.numAllowedAbscence = numAllowedAbscence;
+        this.minimumGrade = minimumGrade;
 
-    }
+        this.id = 0;
 
-    public void deleteCourse(long id) {
-
-    }
-
-    public void editCourse(long id) {
 
     }
 
-    public ArrayList<Category> getAllCategories() {
-        return categories;
-    }
+
+
+
+
 
     public Category findCategory(String name) {
 
