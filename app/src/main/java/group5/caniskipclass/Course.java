@@ -1,7 +1,5 @@
 package group5.caniskipclass;
 
-import java.util.ArrayList;
-
 /**
  * Created by jcdesimp on 2/25/15.
  */
@@ -11,26 +9,22 @@ public class Course {
     private double weight;
     private long id;
     private int numAbscence;
-    private int numAllowedAbscence;
+    private int numAllowedAbsence;
     private double currentGrade;
-    private double minimumGrade;
-    private ArrayList<Category> categories;
+    private String minimumGrade;
 
-    public void addNewCourse() {
+    public Course(String name, String minimumGrade, int numAllowedAbsence) {
+        this.name = name;
+        this.numAllowedAbsence = numAllowedAbsence;
+        this.minimumGrade = minimumGrade;
 
+        this.id = 0;
     }
 
-    public void deleteCourse(long id) {
 
-    }
 
-    public void editCourse(long id) {
 
-    }
 
-    public ArrayList<Category> getAllCategories() {
-        return categories;
-    }
 
     public Category findCategory(String name) {
 
