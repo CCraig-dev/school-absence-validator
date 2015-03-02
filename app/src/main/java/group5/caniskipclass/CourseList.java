@@ -1,5 +1,10 @@
 package group5.caniskipclass;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.ArrayList;
 
 /**
@@ -7,31 +12,89 @@ import java.util.ArrayList;
  */
 public class CourseList {
 
-    private ArrayList<Course> courses;
+    // singleton instance
+    private static CourseList sInstance;
 
-    public CourseList() {
-        this.courses = new ArrayList<>();
+    private ArrayList<Course> courses;
+    private Context appcontext;
+
+    public static CourseList getInstance(Context appcontext) {
+        if (sInstance == null) {
+            sInstance =  new CourseList(appcontext);
+        }
+        return sInstance;
     }
 
-    public void addNewCourse(Course c) {
-        courses.add(c);
+
+    private CourseList(Context appcontext) {
+        this.appcontext = appcontext;
+        this.courses = new ArrayList<>();
+        updateCourseList();
+    }
+
+    public void updateCourseList() {
+        CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(appcontext);
+        SQLiteDatabase db = dbhelp.getWritableDatabase();
+
+        courses.clear();
+
+        String sortOrder = CanISkipClassContract.CourseEntry.COLUMN_NAME_NAME + " DESC";
+
+
+        Cursor c = db.rawQuery("select * from " + CanISkipClassContract.CourseEntry.TABLE_NAME, null);
+
+
+        c.moveToFirst();
+
+        while(!c.isAfterLast()) {
+            String name = c.getString(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_NAME));
+            String minGrade = c.getString(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_MIN_GRADE));
+            int numAllowedAbsences = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE));
+            courses.add(new Course(name, minGrade, numAllowedAbsences));
+            //System.out.println("OHNO!");
+            c.moveToNext();
+
+        }
+
+        c.close();
+    }
+
+    public void addNewCourse(Course newCourse) {
+
+
+        CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(appcontext);
+        SQLiteDatabase db = dbhelp.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(CanISkipClassContract.CourseEntry.COLUMN_NAME_NAME, newCourse.getName());
+        values.put(CanISkipClassContract.CourseEntry.COLUMN_NAME_MIN_GRADE, newCourse.getMinimumGrade());
+        values.put(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE, newCourse.getNumAllowedAbsence());
+
+        long newRowId;
+        newRowId = db.insert(
+                CanISkipClassContract.CourseEntry.TABLE_NAME,
+                null,
+                values
+        );
+
+        updateCourseList();
+    }
+
+    public ArrayList<String> getCourseNames() {
+        ArrayList<String> courseNames = new ArrayList<>();
+
+        for(Course c : courses) {
+            courseNames.add(c.getName());
+        }
+
+        return courseNames;
+
     }
 
     public ArrayList<Course> getCourses() {
         return courses;
     }
 
-    public Course findCourse(long id) {
 
-        return null;
-    }
-
-    public void deleteCourse(long id) {
-
-    }
-
-    public void editCourse(long id) {
-
-    }
 
 }

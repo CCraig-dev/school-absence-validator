@@ -22,9 +22,25 @@ public class Course {
     }
 
 
+    public String getName() {
+        return name;
+    }
 
+    public int getNumAbscence() {
+        return numAbscence;
+    }
 
+    public int getNumAllowedAbsence() {
+        return numAllowedAbsence;
+    }
 
+    public double getCurrentGrade() {
+        return currentGrade;
+    }
+
+    public String getMinimumGrade() {
+        return minimumGrade;
+    }
 
     public Category findCategory(String name) {
 
