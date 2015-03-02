@@ -20,10 +20,7 @@ public class MainActivity extends ActionBarActivity {
 
     //todo default course values here, remove at later time and retrieve from storage instead
     //String[] courseList = {"Trends in SE", "Physics", "Calculus", "Computer Science", "English", "Web Development"};
-    //CourseList courseList = new CourseList();
-
-    ArrayList<String> courseList = new ArrayList<>();
-
+    CourseList courseList;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -36,45 +33,20 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        courseList = CourseList.getInstance(this);
+
         setContentView(R.layout.activity_main);
 
         updateList();
-
-
-
     }
 
     private void updateList() {
 
-        CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(this);
-        SQLiteDatabase db = dbhelp.getWritableDatabase();
-
-        String[] projection = {
-                CourseEntry._ID,
-                CourseEntry.COLUMN_NAME_NAME
-        };
-
-        courseList.clear();
-
-        String sortOrder = CourseEntry.COLUMN_NAME_NAME + " DESC";
-
-
-        Cursor c = db.rawQuery("select * from " + CourseEntry.TABLE_NAME, null);
-
-
-        c.moveToFirst();
-
-        while(!c.isAfterLast()) {
-            String name = c.getString(c.getColumnIndex(CourseEntry.COLUMN_NAME_NAME));
-            courseList.add(name);
-            //System.out.println("OHNO!");
-            c.moveToNext();
-
-        }
+        ArrayList<String> cl = courseList.getCourseNames();
 
         ListView lv = (ListView) findViewById(R.id.courselist);
 
-        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.course_name, courseList));
+        lv.setAdapter(new ArrayAdapter<>(this, R.layout.list_item, R.id.course_name, cl));
     }
 
 

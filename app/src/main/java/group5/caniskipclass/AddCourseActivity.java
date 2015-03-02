@@ -87,20 +87,7 @@ public class AddCourseActivity extends ActionBarActivity {
                     minGrade.getSelectedItem().toString(),
                     Integer.parseInt(allowedAbsences.getText().toString()));
 
-            CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(this);
-            SQLiteDatabase db = dbhelp.getWritableDatabase();
-
-            ContentValues values = new ContentValues();
-            values.put(CourseEntry.COLUMN_NAME_NAME, cName.getText().toString());
-            values.put(CourseEntry.COLUMN_NAME_MIN_GRADE, minGrade.getSelectedItem().toString());
-            values.put(CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE, allowedAbsences.getText().toString());
-
-            long newRowId;
-            newRowId = db.insert(
-                    CanISkipClassContract.CourseEntry.TABLE_NAME,
-                    null,
-                    values
-            );
+            CourseList.getInstance(this).addNewCourse(newCourse);
 
 
 
