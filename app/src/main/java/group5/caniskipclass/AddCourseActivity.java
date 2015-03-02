@@ -1,8 +1,10 @@
 package group5.caniskipclass;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +13,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import group5.caniskipclass.CanISkipClassContract.*;
 
 
 public class AddCourseActivity extends ActionBarActivity {
@@ -82,7 +86,22 @@ public class AddCourseActivity extends ActionBarActivity {
             Course newCourse = new Course(cName.getText().toString(),
                     minGrade.getSelectedItem().toString(),
                     Integer.parseInt(allowedAbsences.getText().toString()));
-            //todo add course to database
+
+            CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(this);
+            SQLiteDatabase db = dbhelp.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(CourseEntry.COLUMN_NAME_NAME, cName.getText().toString());
+            values.put(CourseEntry.COLUMN_NAME_MIN_GRADE, minGrade.getSelectedItem().toString());
+            values.put(CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE, allowedAbsences.getText().toString());
+
+            long newRowId;
+            newRowId = db.insert(
+                    CanISkipClassContract.CourseEntry.TABLE_NAME,
+                    null,
+                    values
+            );
+
 
 
 
