@@ -18,8 +18,16 @@
         </activity>
         <activity
             android:name=".AddCourseActivity"
-            android:parentActivityName=".MainActivity"
-            android:label="@string/title_activity_crud_course" >
+            android:label="@string/title_activity_crud_course"
+            android:parentActivityName=".MainActivity" >
+        </activity>
+        <activity
+            android:name=".CourseDetailActivity"
+            android:label="@string/title_activity_course_detail"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="group5.caniskipclass.MainActivity" />
         </activity>
     </application>
 
