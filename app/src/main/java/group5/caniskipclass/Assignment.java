@@ -29,6 +29,8 @@ public class Assignment {
         isGraded = true;
     }
 
+    public String getName(){ return name; }
+
     public void setWeight(double weight) {
         this.weight = weight;
     }

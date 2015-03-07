@@ -9,21 +9,30 @@ public class Category {
     private String name;
     private double weight;
 
-    private ArrayList<Assignment> assignemnts;
+    private ArrayList<Assignment> assignments;
 
     public Category(String name, double weight){
         this.name = name;
         this.weight = weight;
 
-        assignemnts = new ArrayList<Assignment>();
+        assignments = new ArrayList<Assignment>();
     }
 
-    public ArrayList<Assignment> getAssignemnts() {
-        return assignemnts;
+    public ArrayList<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public ArrayList<String> getAssignmentNames()
+    {
+        ArrayList<String> names = new ArrayList<String>();
+        for (Assignment assignment : assignments)
+            names.add(assignment.getName());
+
+        return names;
     }
 
     public void addAssignment(Assignment assignment){
-        assignemnts.add(assignment);
+        assignments.add(assignment);
     }
 
     public String getName(){

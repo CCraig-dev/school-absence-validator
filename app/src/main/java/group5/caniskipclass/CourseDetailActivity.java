@@ -26,7 +26,7 @@ public class CourseDetailActivity extends ActionBarActivity {
     ArrayList<Category> categoryList;
     List<String> groupList;
     List<String> childList;
-    Map<String, List<String>> categorizedAssignments;
+    Map<Category, List<Assignment>> categorizedAssignments;
 
 
     @Override
@@ -48,6 +48,9 @@ public class CourseDetailActivity extends ActionBarActivity {
         categoryList.get(0).addAssignment(new Assignment("Homework 1", 20, 17));
         categoryList.get(0).addAssignment(new Assignment("Homework 2", 40, 23));
 
+        categoryList.get(1).addAssignment(new Assignment("Midterm", 100, 77));
+        categoryList.get(1).addAssignment(new Assignment("Final Exam", 40, 88));
+
         updateList();
 
     }
@@ -57,19 +60,13 @@ public class CourseDetailActivity extends ActionBarActivity {
         createGroupList();
         createCollection();
 
-        ArrayList<String> cl = new ArrayList<>();
-
-        for(Category cat : categoryList){
-            cl.add(cat.getName());
-        }
-
 
         //ListView lv = (ListView) findViewById(R.id.categorylist);
         //lv.setAdapter(new ArrayAdapter<>(this, R.layout.category_list_item, R.id.category_name, cl));
 
         ExpandableListView elv = (ExpandableListView) findViewById(R.id.category_list);
 
-        elv.setAdapter(new CategoryListViewAdapter(this, groupList, categorizedAssignments));
+        elv.setAdapter(new CategoryListViewAdapter(this, categoryList, categorizedAssignments));
 
         //elv.setAdapter(new ExpandableListAdapter()
 
@@ -87,23 +84,11 @@ public class CourseDetailActivity extends ActionBarActivity {
 
     private void createCollection() {
 
-        String[] exams = {"Midterm", "Final"};
-        String[] homeworks = {"Homework 1", "Homework 2"};
+        categorizedAssignments = new LinkedHashMap<Category, List<Assignment>>();
 
-        categorizedAssignments = new LinkedHashMap<String, List<String>>();
-
-        loadChild(homeworks);
-        categorizedAssignments.put(groupList.get(0), childList);
-
-        loadChild(exams);
-        categorizedAssignments.put(groupList.get(1), childList);
-    }
-
-    private void loadChild(String[] assignments) {
-        childList = new ArrayList<String>();
-
-        for (String assignment: assignments)
-            childList.add(assignment);
+        for (Category category : categoryList) {
+            categorizedAssignments.put(category, category.getAssignments());
+        }
     }
 
     @Override

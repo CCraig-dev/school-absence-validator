@@ -19,34 +19,34 @@ import java.util.Map;
 public class CategoryListViewAdapter extends BaseExpandableListAdapter {
 
     private Activity context;
-    private Map<String, List<String>> categorizedAssignments;
-    private List<String> assignments;
+    private Map<Category, List<Assignment>> categorizedAssignments;
+    private List<Category> categories;
 
-    public CategoryListViewAdapter(Activity context, List<String> assignments,
-                                   Map<String, List<String>> categorizedAssignments) {
+    public CategoryListViewAdapter(Activity context, List<Category> categories,
+                                   Map<Category, List<Assignment>> categorizedAssignments) {
         this.context = context;
         this.categorizedAssignments = categorizedAssignments;
-        this.assignments = assignments;
+        this.categories = categories;
     }
 
     @Override
     public int getGroupCount() {
-        return assignments.size();
+        return categories.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return categorizedAssignments.get(assignments.get(groupPosition)).size();
+        return categorizedAssignments.get(categories.get(groupPosition)).size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return assignments.get(groupPosition);
+        return categories.get(groupPosition).getName();
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return categorizedAssignments.get(assignments.get(groupPosition)).get(childPosition);
+        return categorizedAssignments.get(categories.get(groupPosition)).get(childPosition).getName();
     }
 
     @Override
