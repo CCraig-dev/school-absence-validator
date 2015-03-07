@@ -5,10 +5,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 public class CourseDetailActivity extends ActionBarActivity {
+
+    ArrayList<Category> categoryList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,11 +25,32 @@ public class CourseDetailActivity extends ActionBarActivity {
 
         int position = getIntent().getExtras().getInt("position");
 
-        //System.out.println(position);
+        // Set title of activity to course name
         CourseList courseList = CourseList.getInstance(this);
         String courseName = courseList.getCourseNames().get(position);
-        TextView courseNameView = (TextView) findViewById(R.id.course_name);
-        courseNameView.setText(courseName);
+        setTitle(courseName);
+
+        categoryList = new ArrayList<Category>();
+        categoryList.add(new Category("Homework", 50));
+        categoryList.add(new Category("Exams", 50));
+        
+        updateList();
+
+    }
+
+    private void updateList() {
+
+        ArrayList<String> cl = new ArrayList<>();
+
+        for(Category cat : categoryList){
+            cl.add(cat.getName());
+        }
+
+
+        ListView lv = (ListView) findViewById(R.id.categorylist);
+
+        lv.setAdapter(new ArrayAdapter<>(this, R.layout.category_list_item, R.id.category_name, cl));
+
     }
 
 
