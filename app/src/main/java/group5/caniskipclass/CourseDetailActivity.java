@@ -1,22 +1,33 @@
 package group5.caniskipclass;
 
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class CourseDetailActivity extends ActionBarActivity {
 
     ArrayList<Category> categoryList;
+    List<String> groupList;
+    List<String> childList;
+    Map<String, List<String>> categorizedAssignments;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +44,18 @@ public class CourseDetailActivity extends ActionBarActivity {
         categoryList = new ArrayList<Category>();
         categoryList.add(new Category("Homework", 50));
         categoryList.add(new Category("Exams", 50));
-        
+
+        categoryList.get(0).addAssignment(new Assignment("Homework 1", 20, 17));
+        categoryList.get(0).addAssignment(new Assignment("Homework 2", 40, 23));
+
         updateList();
 
     }
 
     private void updateList() {
+
+        createGroupList();
+        createCollection();
 
         ArrayList<String> cl = new ArrayList<>();
 
@@ -47,12 +64,47 @@ public class CourseDetailActivity extends ActionBarActivity {
         }
 
 
-        ListView lv = (ListView) findViewById(R.id.categorylist);
+        //ListView lv = (ListView) findViewById(R.id.categorylist);
+        //lv.setAdapter(new ArrayAdapter<>(this, R.layout.category_list_item, R.id.category_name, cl));
 
-        lv.setAdapter(new ArrayAdapter<>(this, R.layout.category_list_item, R.id.category_name, cl));
+        ExpandableListView elv = (ExpandableListView) findViewById(R.id.category_list);
+
+        elv.setAdapter(new CategoryListViewAdapter(this, groupList, categorizedAssignments));
+
+        //elv.setAdapter(new ExpandableListAdapter()
+
+
 
     }
 
+
+    private void createGroupList(){
+        groupList = new ArrayList<String>();
+        groupList.add("Homework");
+        groupList.add("Exams");
+
+    }
+
+    private void createCollection() {
+
+        String[] exams = {"Midterm", "Final"};
+        String[] homeworks = {"Homework 1", "Homework 2"};
+
+        categorizedAssignments = new LinkedHashMap<String, List<String>>();
+
+        loadChild(homeworks);
+        categorizedAssignments.put(groupList.get(0), childList);
+
+        loadChild(exams);
+        categorizedAssignments.put(groupList.get(1), childList);
+    }
+
+    private void loadChild(String[] assignments) {
+        childList = new ArrayList<String>();
+
+        for (String assignment: assignments)
+            childList.add(assignment);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

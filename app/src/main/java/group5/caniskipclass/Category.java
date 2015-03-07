@@ -11,16 +11,18 @@ public class Category {
 
     private ArrayList<Assignment> assignemnts;
 
-    public Category(String n, double w){
-        name = n;
-        weight = w;
+    public Category(String name, double weight){
+        this.name = name;
+        this.weight = weight;
+
+        assignemnts = new ArrayList<Assignment>();
     }
 
     public ArrayList<Assignment> getAssignemnts() {
         return assignemnts;
     }
 
-    public void AddAssignment(Assignment assignment){
+    public void addAssignment(Assignment assignment){
         assignemnts.add(assignment);
     }
 
