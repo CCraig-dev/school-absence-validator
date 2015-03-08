@@ -29,6 +29,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="group5.caniskipclass.MainActivity" />
         </activity>
+        <activity
+            android:name=".AddAssignmentActivity"
+            android:label="@string/title_activity_add_assignment"
+            android:parentActivityName=".CourseDetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="group5.caniskipclass.CourseDetailActivity" />
+        </activity>
     </application>
 
 </manifest>

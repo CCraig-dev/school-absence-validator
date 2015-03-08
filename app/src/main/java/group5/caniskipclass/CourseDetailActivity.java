@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
@@ -23,10 +24,9 @@ import java.util.Map;
 
 public class CourseDetailActivity extends ActionBarActivity {
 
-    ArrayList<Category> categoryList;
-    List<String> groupList;
-    List<String> childList;
-    Map<Category, List<Assignment>> categorizedAssignments;
+    private int position;
+    private ArrayList<Category> categoryList;
+    private Map<Category, List<Assignment>> categorizedAssignments;
 
 
     @Override
@@ -34,7 +34,7 @@ public class CourseDetailActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_detail);
 
-        int position = getIntent().getExtras().getInt("position");
+        position = getIntent().getExtras().getInt("position");
 
         // Set title of activity to course name
         CourseList courseList = CourseList.getInstance(this);
@@ -56,30 +56,14 @@ public class CourseDetailActivity extends ActionBarActivity {
     }
 
     private void updateList() {
-
-        createGroupList();
         createCollection();
-
 
         //ListView lv = (ListView) findViewById(R.id.categorylist);
         //lv.setAdapter(new ArrayAdapter<>(this, R.layout.category_list_item, R.id.category_name, cl));
 
         ExpandableListView elv = (ExpandableListView) findViewById(R.id.category_list);
 
-        elv.setAdapter(new CategoryListViewAdapter(this, categoryList, categorizedAssignments));
-
-        //elv.setAdapter(new ExpandableListAdapter()
-
-
-
-    }
-
-
-    private void createGroupList(){
-        groupList = new ArrayList<String>();
-        groupList.add("Homework");
-        groupList.add("Exams");
-
+        elv.setAdapter(new CategoryListViewAdapter(this, categoryList, categorizedAssignments, position));
     }
 
     private void createCollection() {
@@ -91,6 +75,10 @@ public class CourseDetailActivity extends ActionBarActivity {
         }
     }
 
+    public void addClicked(View view) {
+
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

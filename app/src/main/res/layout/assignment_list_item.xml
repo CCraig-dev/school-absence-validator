@@ -9,4 +9,13 @@
         android:padding="12dp"
         android:textSize="20sp" />
 
+    <TextView
+        android:id="@+id/assignment_grade"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="right"
+        android:padding="12dp"
+        android:textSize="20sp" />
+
+
 </RelativeLayout>

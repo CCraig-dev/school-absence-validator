@@ -11,4 +11,6 @@
     <string name="enter_course_hint">Enter Course Name</string>
     <string name="allowed_absences_label">Allowed Absences: </string>
     <string name="title_activity_course_detail">CourseDetailActivity</string>
+    <string name="add_assignment">Add Assignment</string>
+    <string name="title_activity_add_assignment">AddAssignmentActivity</string>
 </resources>

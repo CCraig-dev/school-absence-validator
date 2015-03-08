@@ -31,6 +31,9 @@ public class Assignment {
 
     public String getName(){ return name; }
 
+    public double getWeight() { return weight; }
+    public double getGrade() {return grade;}
+
     public void setWeight(double weight) {
         this.weight = weight;
     }
