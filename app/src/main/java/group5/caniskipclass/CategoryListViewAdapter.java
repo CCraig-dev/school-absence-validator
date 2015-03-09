@@ -83,17 +83,17 @@ public class CategoryListViewAdapter extends BaseExpandableListAdapter {
         item.setTypeface(null, Typeface.BOLD);
         item.setText(categoryName);
 
-        Button addButton = (Button) convertView.findViewById(R.id.add_button);
-
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent addAssignment = new Intent(v.getContext(), AddAssignmentActivity.class);
-                addAssignment.putExtra("position", position);
-                addAssignment.putExtra("category", categoryName);
-                context.startActivity(addAssignment);
-            }
-        });
+//        Button addButton = (Button) convertView.findViewById(R.id.add_button);
+//
+//        addButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent addAssignment = new Intent(v.getContext(), AddAssignmentActivity.class);
+//                addAssignment.putExtra("position", position);
+//                addAssignment.putExtra("category", categoryName);
+//                context.startActivity(addAssignment);
+//            }
+//        });
 
         return convertView;
     }

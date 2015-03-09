@@ -47,4 +47,6 @@ public class Category {
     public double getWeight(){
         return weight;
     }
+
+
 }

@@ -31,9 +31,10 @@ public class CanISkipClassDbHelper extends SQLiteOpenHelper {
                     AssignmentEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     AssignmentEntry.COLUMN_NAME_CATEGORY + TEXT_TYPE + COMMA_SEP +
                     AssignmentEntry.COLUMN_NAME_GRADE + INTEGER_TYPE + COMMA_SEP +
-                    AssignmentEntry.COLUMN_NAME_WEIGHT + INTEGER_TYPE +
-                    " )"
-            ;
+                    AssignmentEntry.COLUMN_NAME_WEIGHT + INTEGER_TYPE + COMMA_SEP +
+                    AssignmentEntry.COLUMN_NAME_CLASS_ID + INTEGER_TYPE + COMMA_SEP +
+                    "FOREIGN KEY (" + AssignmentEntry.COLUMN_NAME_CLASS_ID + ") REFERENCES " + CourseEntry.TABLE_NAME + " (" + CourseEntry._ID + ")"+
+                    " )";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + CourseEntry.TABLE_NAME +
@@ -56,7 +57,7 @@ public class CanISkipClassDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "FeedReader.db";
+    public static final String DATABASE_NAME = "CanSkipClass.db";
 
     public CanISkipClassDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

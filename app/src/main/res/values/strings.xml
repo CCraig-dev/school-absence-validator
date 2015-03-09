@@ -17,4 +17,5 @@
     <string name="assignment_grade_label">Grade:</string>
     <string name="assignment_weight_label">Weight:</string>
     <string name="enter_assignment_hint">Enter Assignment Name</string>
+    <string name="assignment_cat_label">Category </string>
 </resources>
