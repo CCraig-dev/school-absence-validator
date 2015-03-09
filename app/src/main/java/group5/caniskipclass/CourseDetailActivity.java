@@ -75,10 +75,6 @@ public class CourseDetailActivity extends ActionBarActivity {
         }
     }
 
-    public void addClicked(View view) {
-
-
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

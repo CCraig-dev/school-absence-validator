@@ -1,5 +1,9 @@
 package group5.caniskipclass;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.ArrayList;
 
 /**
@@ -12,6 +16,7 @@ public class Category {
     private ArrayList<Assignment> assignments;
 
     public Category(String name, double weight){
+
         this.name = name;
         this.weight = weight;
 

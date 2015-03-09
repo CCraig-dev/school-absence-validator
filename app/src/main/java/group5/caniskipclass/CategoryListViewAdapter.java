@@ -72,8 +72,8 @@ public class CategoryListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        Category category = (Category)getGroup(groupPosition);
-        String categoryName = category.getName();
+        final Category category = (Category)getGroup(groupPosition);
+        final String categoryName = category.getName();
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.category_list_item, null);
@@ -90,6 +90,7 @@ public class CategoryListViewAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 Intent addAssignment = new Intent(v.getContext(), AddAssignmentActivity.class);
                 addAssignment.putExtra("position", position);
+                addAssignment.putExtra("category", categoryName);
                 context.startActivity(addAssignment);
             }
         });
