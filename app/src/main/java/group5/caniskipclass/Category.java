@@ -1,5 +1,9 @@
 package group5.caniskipclass;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.ArrayList;
 
 /**
@@ -8,9 +12,39 @@ import java.util.ArrayList;
 public class Category {
     private String name;
     private double weight;
-    private ArrayList<Assignment> assignemnts;
 
-    public ArrayList<Assignment> getAssignemnts() {
-        return assignemnts;
+    private ArrayList<Assignment> assignments;
+
+    public Category(String name, double weight){
+
+        this.name = name;
+        this.weight = weight;
+
+        assignments = new ArrayList<Assignment>();
+    }
+
+    public ArrayList<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public ArrayList<String> getAssignmentNames()
+    {
+        ArrayList<String> names = new ArrayList<String>();
+        for (Assignment assignment : assignments)
+            names.add(assignment.getName());
+
+        return names;
+    }
+
+    public void addAssignment(Assignment assignment){
+        assignments.add(assignment);
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public double getWeight(){
+        return weight;
     }
 }

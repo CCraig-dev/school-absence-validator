@@ -10,4 +10,11 @@
     <string name="course_edit_confirm">Confirm</string>
     <string name="enter_course_hint">Enter Course Name</string>
     <string name="allowed_absences_label">Allowed Absences: </string>
+    <string name="title_activity_course_detail">CourseDetailActivity</string>
+    <string name="add_assignment">Add Assignment</string>
+    <string name="title_activity_add_assignment">AddAssignmentActivity</string>
+    <string name="assignment_name_label">Assignment Name:</string>
+    <string name="assignment_grade_label">Grade:</string>
+    <string name="assignment_weight_label">Weight:</string>
+    <string name="enter_assignment_hint">Enter Assignment Name</string>
 </resources>

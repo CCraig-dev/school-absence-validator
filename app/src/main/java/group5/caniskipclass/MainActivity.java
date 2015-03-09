@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -47,6 +49,16 @@ public class MainActivity extends ActionBarActivity {
         ListView lv = (ListView) findViewById(R.id.courselist);
 
         lv.setAdapter(new ArrayAdapter<>(this, R.layout.list_item, R.id.course_name, cl));
+
+        //set onClick event listener to move to CourseDetailActivity
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent courseDetail = new Intent(view.getContext(), CourseDetailActivity.class);
+                courseDetail.putExtra("position", position);
+                startActivity(courseDetail);
+            }
+        });
     }
 
 
