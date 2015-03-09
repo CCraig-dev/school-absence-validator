@@ -48,10 +48,12 @@ public class CourseList {
 
         while(!c.isAfterLast()) {
             String name = c.getString(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_NAME));
+            int id = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry._ID));
             String minGrade = c.getString(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_MIN_GRADE));
             int numAllowedAbsences = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE));
-            courses.add(new Course(name, minGrade, numAllowedAbsences));
-            //System.out.println("OHNO!");
+            Course nc = new Course(name, minGrade, numAllowedAbsences);
+            nc.setId(id);
+            courses.add(nc);
             c.moveToNext();
 
         }

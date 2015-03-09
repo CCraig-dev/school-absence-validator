@@ -1,11 +1,8 @@
 package group5.caniskipclass;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,8 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-
-import group5.caniskipclass.CanISkipClassContract.*;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -81,7 +76,6 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_add) {
-            //todo handle adding a course
             Intent intent = new Intent(this, AddCourseActivity.class);
 
             startActivity(intent);
@@ -89,8 +83,4 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    /*public CourseList getCourseList() {
-        return courseList;
-    }*/
 }

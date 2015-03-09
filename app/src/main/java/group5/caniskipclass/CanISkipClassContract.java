@@ -20,7 +20,9 @@ public final class CanISkipClassContract {
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_CATEGORY = "category";
         public static final String COLUMN_NAME_GRADE = "grade";
-        public static final String COLUMN_NAME_WEIGHT = "absence";
+        public static final String COLUMN_NAME_WEIGHT = "weight";
+        public static final String COLUMN_NAME_CLASS_ID = "class_id";
+
     }
 
 

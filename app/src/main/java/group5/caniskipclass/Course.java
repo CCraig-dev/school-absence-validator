@@ -21,6 +21,13 @@ public class Course {
         this.id = 0;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -45,6 +52,10 @@ public class Course {
     public Category findCategory(String name) {
 
         return null;
+    }
+
+    public void addAssignment(Assignment a) {
+
     }
 
 

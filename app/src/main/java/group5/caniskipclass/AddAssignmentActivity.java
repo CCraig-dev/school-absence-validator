@@ -17,14 +17,17 @@ public class AddAssignmentActivity extends ActionBarActivity {
 
     int position;
     String category;
+    long courseId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_assignment);
         position = getIntent().getExtras().getInt("position");
-        category = getIntent().getExtras().getString("category");
-        setTitle("Add "+category+" Assignment");
+        courseId = getIntent().getExtras().getLong("courseId");
+        //category = getIntent().getExtras().getString("category");
+
+        setTitle("Add new Assignment");
     }
 
 
@@ -58,12 +61,13 @@ public class AddAssignmentActivity extends ActionBarActivity {
     }
 
     public void confirmAdd(View view) {
+        EditText aCategory = ((EditText) findViewById(R.id.assignment_category));
         EditText aName = ((EditText) findViewById(R.id.assignment_name));
         EditText grade = ((EditText) findViewById(R.id.assignment_grade));
         EditText weight = ((EditText) findViewById(R.id.assignment_weight));
 
         // validate the fields
-        if (aName.getText().length() == 0 || grade.getText().length() == 0 || grade.getText().length() == 0  ) {
+        if (aName.getText().length() == 0 || grade.getText().length() == 0 || aCategory.getText().length() == 0 ) {
             new AlertDialog.Builder(this)
                     .setTitle("Incomplete Fields")
                     .setMessage("Please fill in all fields before submitting.")
@@ -87,8 +91,10 @@ public class AddAssignmentActivity extends ActionBarActivity {
             values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME, newAssignment.getName());
             values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE, newAssignment.getGrade());
             values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT, newAssignment.getWeight());
-            values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY, category);
+            values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY, aCategory.getText().toString());
+            values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CLASS_ID, courseId);
 
+            //System.out.println("Position: " + position);
             long newRowId;
             newRowId = db.insert(
                     CanISkipClassContract.AssignmentEntry.TABLE_NAME,
