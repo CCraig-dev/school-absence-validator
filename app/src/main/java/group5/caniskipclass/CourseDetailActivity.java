@@ -15,6 +15,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import group5.caniskipclass.models.Assignment;
+import group5.caniskipclass.models.Category;
+import group5.caniskipclass.models.Course;
+
 
 public class CourseDetailActivity extends ActionBarActivity {
 
@@ -105,14 +109,7 @@ public class CourseDetailActivity extends ActionBarActivity {
         for(Category ca : foundCats.values()) {
             categoryList.add(ca);
         }
-//        categoryList.add(new Category("Homework", 50));
-//        categoryList.add(new Category("Exams", 50));
-//
-//        categoryList.get(0).addAssignment(new Assignment("Homework 1", 20, 17));
-//        categoryList.get(0).addAssignment(new Assignment("Homework 2", 40, 23));
-//
-//        categoryList.get(1).addAssignment(new Assignment("Midterm", 100, 77));
-//        categoryList.get(1).addAssignment(new Assignment("Final Exam", 40, 88));
+
 
         createCollection();
 

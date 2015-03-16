@@ -1,8 +1,4 @@
-package group5.caniskipclass;
-
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+package group5.caniskipclass.models;
 
 import java.util.ArrayList;
 

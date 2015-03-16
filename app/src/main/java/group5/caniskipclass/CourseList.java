@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
+import group5.caniskipclass.models.Course;
+
 /**
  * Created by jcdesimp on 2/25/15.
  */

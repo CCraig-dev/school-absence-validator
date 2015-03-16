@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import group5.caniskipclass.models.Assignment;
+
 
 public class AddAssignmentActivity extends ActionBarActivity {
 

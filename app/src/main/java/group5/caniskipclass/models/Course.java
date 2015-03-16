@@ -1,4 +1,4 @@
-package group5.caniskipclass;
+package group5.caniskipclass.models;
 
 /**
  * Created by jcdesimp on 2/25/15.
