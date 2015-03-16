@@ -1,4 +1,4 @@
-package group5.caniskipclass;
+package group5.caniskipclass.persistence;
 
 import android.provider.BaseColumns;
 

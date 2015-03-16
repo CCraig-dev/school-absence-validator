@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".views.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,25 +17,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddCourseActivity"
+            android:name=".views.AddCourseActivity"
             android:label="@string/title_activity_crud_course"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".views.MainActivity" >
         </activity>
         <activity
-            android:name=".CourseDetailActivity"
+            android:name=".views.CourseDetailActivity"
             android:label="@string/title_activity_course_detail"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".views.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="group5.caniskipclass.MainActivity" />
+                android:value=".views.MainActivity" />
         </activity>
         <activity
-            android:name=".AddAssignmentActivity"
+            android:name=".views.AddAssignmentActivity"
             android:label="@string/title_activity_add_assignment"
-            android:parentActivityName=".CourseDetailActivity" >
+            android:parentActivityName=".views.CourseDetailActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="group5.caniskipclass.CourseDetailActivity" />
+                android:value=".views.CourseDetailActivity" />
         </activity>
     </application>
 

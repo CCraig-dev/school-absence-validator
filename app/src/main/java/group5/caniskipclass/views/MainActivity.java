@@ -1,4 +1,4 @@
-package group5.caniskipclass;
+package group5.caniskipclass.views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+
+import group5.caniskipclass.CourseList;
+import group5.caniskipclass.R;
 
 
 public class MainActivity extends ActionBarActivity {

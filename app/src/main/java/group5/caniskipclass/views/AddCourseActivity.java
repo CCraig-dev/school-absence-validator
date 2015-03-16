@@ -1,4 +1,4 @@
-package group5.caniskipclass;
+package group5.caniskipclass.views;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import group5.caniskipclass.CourseList;
+import group5.caniskipclass.R;
 import group5.caniskipclass.models.Course;
 
 

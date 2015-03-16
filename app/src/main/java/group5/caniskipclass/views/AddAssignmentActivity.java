@@ -1,4 +1,4 @@
-package group5.caniskipclass;
+package group5.caniskipclass.views;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -12,6 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import group5.caniskipclass.persistence.CanISkipClassContract;
+import group5.caniskipclass.persistence.CanISkipClassDbHelper;
+import group5.caniskipclass.R;
 import group5.caniskipclass.models.Assignment;
 
 
@@ -96,7 +99,6 @@ public class AddAssignmentActivity extends ActionBarActivity {
             values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY, aCategory.getText().toString());
             values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CLASS_ID, courseId);
 
-            //System.out.println("Position: " + position);
             long newRowId;
             newRowId = db.insert(
                     CanISkipClassContract.AssignmentEntry.TABLE_NAME,

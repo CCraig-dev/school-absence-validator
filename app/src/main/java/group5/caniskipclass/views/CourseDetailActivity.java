@@ -1,4 +1,4 @@
-package group5.caniskipclass;
+package group5.caniskipclass.views;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,6 +15,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import group5.caniskipclass.persistence.CanISkipClassContract;
+import group5.caniskipclass.persistence.CanISkipClassDbHelper;
+import group5.caniskipclass.CategoryListViewAdapter;
+import group5.caniskipclass.CourseList;
+import group5.caniskipclass.R;
 import group5.caniskipclass.models.Assignment;
 import group5.caniskipclass.models.Category;
 import group5.caniskipclass.models.Course;
@@ -69,7 +74,6 @@ public class CourseDetailActivity extends ActionBarActivity {
 
         Cursor c = db.rawQuery("select * from " + CanISkipClassContract.AssignmentEntry.TABLE_NAME + " WHERE " +
                 CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CLASS_ID + " = " + thisCourse.getId(), null);
-        System.out.println(thisCourse.getId());
 
 
         c.moveToFirst();
@@ -78,7 +82,7 @@ public class CourseDetailActivity extends ActionBarActivity {
 
         while(!c.isAfterLast()) {
             String name = c.getString(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME));
-            System.out.println("Assign class id: " + c.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CLASS_ID)));
+
             int grade;
             if (c.isNull(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE))) {
                 grade = -1;

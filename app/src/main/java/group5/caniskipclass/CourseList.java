@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 
 import group5.caniskipclass.models.Course;
+import group5.caniskipclass.persistence.CanISkipClassContract;
+import group5.caniskipclass.persistence.CanISkipClassDbHelper;
 
 /**
  * Created by jcdesimp on 2/25/15.

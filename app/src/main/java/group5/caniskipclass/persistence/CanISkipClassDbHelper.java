@@ -1,10 +1,10 @@
-package group5.caniskipclass;
+package group5.caniskipclass.persistence;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import group5.caniskipclass.CanISkipClassContract.*;
+import group5.caniskipclass.persistence.CanISkipClassContract.*;
 
 /**
  * Created by jcdesimp on 3/1/15.
