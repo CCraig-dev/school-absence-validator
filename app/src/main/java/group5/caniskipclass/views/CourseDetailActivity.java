@@ -164,7 +164,9 @@ public class CourseDetailActivity extends ActionBarActivity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // continue with delete
-                            thisCourse.delete();
+                            thisCourse.delete(getApplicationContext());
+                            CourseList.getInstance(getApplicationContext()).updateCourseList();
+                            finish();
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
