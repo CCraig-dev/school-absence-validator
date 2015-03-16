@@ -1,5 +1,7 @@
 package group5.caniskipclass.views;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -155,6 +157,25 @@ public class CourseDetailActivity extends ActionBarActivity {
             intent.putExtra("courseId", thisCourse.getId());
             intent.putExtra("nocat", true);
             startActivity(intent);
+        } else if (id == R.id.action_delete) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Are you sure?")
+                    .setMessage("Are you sure you want to delete this course? This action cannot be undone.")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                            thisCourse.delete(getApplicationContext());
+                            CourseList.getInstance(getApplicationContext()).updateCourseList();
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // cancel deletion
+
+                        }
+                    })
+                    .show();
         }
 
         return super.onOptionsItemSelected(item);
