@@ -1,5 +1,12 @@
 package group5.caniskipclass.models;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
+import group5.caniskipclass.persistence.CanISkipClassContract;
+import group5.caniskipclass.persistence.CanISkipClassDbHelper;
+
 /**
  * Created by jcdesimp on 2/25/15.
  */
@@ -54,7 +61,30 @@ public class Course {
         return null;
     }
 
-    public void addAssignment(Assignment a) {
+    public void delete() {
+
+    }
+
+    public void addAssignment(Assignment newAssignment, String cat, Context appcontext) {
+
+
+
+        CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(appcontext);
+        SQLiteDatabase db = dbhelp.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME, newAssignment.getName());
+        values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE, newAssignment.getGrade());
+        values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT, newAssignment.getWeight());
+        values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY, cat);
+        values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CLASS_ID, id);
+
+        long newRowId;
+        newRowId = db.insert(
+                CanISkipClassContract.AssignmentEntry.TABLE_NAME,
+                null,
+                values
+        );
 
     }
 
