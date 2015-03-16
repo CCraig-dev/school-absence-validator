@@ -1,4 +1,4 @@
-package group5.caniskipclass;
+package group5.caniskipclass.views;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -12,11 +12,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import group5.caniskipclass.CourseList;
+import group5.caniskipclass.models.Course;
+import group5.caniskipclass.persistence.CanISkipClassContract;
+import group5.caniskipclass.persistence.CanISkipClassDbHelper;
+import group5.caniskipclass.R;
+import group5.caniskipclass.models.Assignment;
+
 
 public class AddAssignmentActivity extends ActionBarActivity {
 
     int position;
     String category;
+    Course inCourse;
     long courseId;
 
     @Override
@@ -25,6 +33,7 @@ public class AddAssignmentActivity extends ActionBarActivity {
         setContentView(R.layout.activity_add_assignment);
         position = getIntent().getExtras().getInt("position");
         courseId = getIntent().getExtras().getLong("courseId");
+        inCourse = CourseList.getInstance(this).getCourseById(courseId);
         //category = getIntent().getExtras().getString("category");
 
         setTitle("Add new Assignment");
@@ -84,23 +93,7 @@ public class AddAssignmentActivity extends ActionBarActivity {
                     Integer.parseInt(weight.getText().toString()),
                     Integer.parseInt(grade.getText().toString()));
 
-            CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(view.getContext());
-            SQLiteDatabase db = dbhelp.getWritableDatabase();
-
-            ContentValues values = new ContentValues();
-            values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME, newAssignment.getName());
-            values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE, newAssignment.getGrade());
-            values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT, newAssignment.getWeight());
-            values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY, aCategory.getText().toString());
-            values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CLASS_ID, courseId);
-
-            //System.out.println("Position: " + position);
-            long newRowId;
-            newRowId = db.insert(
-                    CanISkipClassContract.AssignmentEntry.TABLE_NAME,
-                    null,
-                    values
-            );
+            inCourse.addAssignment(newAssignment, aCategory.getText().toString(), this);
 
             finish();
         }

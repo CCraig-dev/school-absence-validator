@@ -1,5 +1,7 @@
-package group5.caniskipclass;
+package group5.caniskipclass.views;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +16,15 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import group5.caniskipclass.persistence.CanISkipClassContract;
+import group5.caniskipclass.persistence.CanISkipClassDbHelper;
+import group5.caniskipclass.CategoryListViewAdapter;
+import group5.caniskipclass.CourseList;
+import group5.caniskipclass.R;
+import group5.caniskipclass.models.Assignment;
+import group5.caniskipclass.models.Category;
+import group5.caniskipclass.models.Course;
 
 
 public class CourseDetailActivity extends ActionBarActivity {
@@ -65,7 +76,6 @@ public class CourseDetailActivity extends ActionBarActivity {
 
         Cursor c = db.rawQuery("select * from " + CanISkipClassContract.AssignmentEntry.TABLE_NAME + " WHERE " +
                 CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CLASS_ID + " = " + thisCourse.getId(), null);
-        System.out.println(thisCourse.getId());
 
 
         c.moveToFirst();
@@ -74,7 +84,7 @@ public class CourseDetailActivity extends ActionBarActivity {
 
         while(!c.isAfterLast()) {
             String name = c.getString(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME));
-            System.out.println("Assign class id: " + c.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CLASS_ID)));
+
             int grade;
             if (c.isNull(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE))) {
                 grade = -1;
@@ -105,14 +115,7 @@ public class CourseDetailActivity extends ActionBarActivity {
         for(Category ca : foundCats.values()) {
             categoryList.add(ca);
         }
-//        categoryList.add(new Category("Homework", 50));
-//        categoryList.add(new Category("Exams", 50));
-//
-//        categoryList.get(0).addAssignment(new Assignment("Homework 1", 20, 17));
-//        categoryList.get(0).addAssignment(new Assignment("Homework 2", 40, 23));
-//
-//        categoryList.get(1).addAssignment(new Assignment("Midterm", 100, 77));
-//        categoryList.get(1).addAssignment(new Assignment("Final Exam", 40, 88));
+
 
         createCollection();
 
@@ -154,6 +157,25 @@ public class CourseDetailActivity extends ActionBarActivity {
             intent.putExtra("courseId", thisCourse.getId());
             intent.putExtra("nocat", true);
             startActivity(intent);
+        } else if (id == R.id.action_delete) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Are you sure?")
+                    .setMessage("Are you sure you want to delete this course? This action cannot be undone.")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                            thisCourse.delete(getApplicationContext());
+                            CourseList.getInstance(getApplicationContext()).updateCourseList();
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // cancel deletion
+
+                        }
+                    })
+                    .show();
         }
 
         return super.onOptionsItemSelected(item);
