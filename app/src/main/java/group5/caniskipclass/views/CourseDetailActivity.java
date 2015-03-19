@@ -1,14 +1,19 @@
 package group5.caniskipclass.views;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
@@ -71,7 +76,7 @@ public class CourseDetailActivity extends ActionBarActivity {
         //ListView lv = (ListView) findViewById(R.id.categorylist);
         //lv.setAdapter(new ArrayAdapter<>(this, R.layout.category_list_item, R.id.category_name, cl));
 
-        categoryList = new ArrayList<Category>();
+        //categoryList = new ArrayList<Category>();
 
 
         Cursor c = db.rawQuery("select * from " + CanISkipClassContract.AssignmentEntry.TABLE_NAME + " WHERE " +
@@ -132,6 +137,79 @@ public class CourseDetailActivity extends ActionBarActivity {
         for (Category category : categoryList) {
             categorizedAssignments.put(category, category.getAssignments());
         }
+    }
+
+    public void OnAddCategoryClicked(View view) {
+        final Dialog newCatDialog = new Dialog(this);
+        newCatDialog.setContentView(R.layout.dialog_add_category);
+
+        newCatDialog.setTitle("Enter New Category");
+
+        Button ok = (Button) newCatDialog.findViewById(R.id.ok);
+        Button cancel = (Button) newCatDialog.findViewById(R.id.cancel);
+
+        final EditText nameField = (EditText) newCatDialog.findViewById(R.id.category_name);
+        final EditText weightField = (EditText) newCatDialog.findViewById(R.id.category_weight);
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (nameField.getText().length() == 0 || weightField.getText().length() == 0 ) {
+                    new AlertDialog.Builder(v.getContext())
+                            .setTitle("Incomplete Fields")
+                            .setMessage("Please fill in all fields before submitting.")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with delete
+                                }
+                            })
+                                    //.setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+                else {
+                    String name = (String) nameField.getText().toString();
+                    int weight = Integer.parseInt(weightField.getText().toString());
+                    System.out.println("Category name: " + name + " weight: " + weight);
+
+                    categoryList.add(new Category(name,weight));
+                    updateList();
+                    newCatDialog.dismiss();
+                }
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newCatDialog.dismiss();
+            }
+        });
+        //AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        //alert.setTitle(R.layout.dialog_add_category);
+        /*alert.setTitle("Add New Category");
+
+        final EditText name = new EditText(this);
+        final EditText weight = new EditText(this);
+        weight.setInputType(InputType.TYPE_CLASS_NUMBER);
+        alert.setView(name);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String nameVal = name.getText().toString();
+                int weightVal = Integer.parseInt(weight.getText().toString());
+                // Do something with value!
+                System.out.println("Category added.");
+                Category category = new Category(nameVal, weightVal);
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });*/
+
+        newCatDialog.show();
     }
 
     @Override
