@@ -79,8 +79,8 @@ public class CourseDetailActivity extends ActionBarActivity {
         //categoryList = new ArrayList<Category>();
 
 
-        Cursor c = db.rawQuery("select * from " + CanISkipClassContract.AssignmentEntry.TABLE_NAME + " WHERE " +
-                CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CLASS_ID + " = " + thisCourse.getId(), null);
+        Cursor c = db.rawQuery("select * from " + CanISkipClassContract.CategoryEntry.TABLE_NAME + " WHERE " +
+                CanISkipClassContract.CategoryEntry.COLUMN_NAME_COURSE_ID + " = " + thisCourse.getId(), null);
 
 
         c.moveToFirst();
@@ -88,38 +88,53 @@ public class CourseDetailActivity extends ActionBarActivity {
         HashMap<String, Category> foundCats = new HashMap<>();
 
         while(!c.isAfterLast()) {
-            String name = c.getString(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME));
+            String catName = c.getString(c.getColumnIndex(CanISkipClassContract.CategoryEntry.COLUMN_NAME_NAME));
 
-            int grade;
-            if (c.isNull(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE))) {
-                grade = -1;
-            } else {
-                grade = c.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE));
+            int catWeight = c.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT));
 
-            }
+            //int weight = c.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT));
 
-            int weight = c.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT));
-
-            String categoryName = c.getString(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY));
+            //String categoryName = c.getString(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY));
 
             // if this category hasn't been seen yet, create it
-            if(!foundCats.containsKey(categoryName)) {
+            /*if(!foundCats.containsKey(categoryName)) {
                 foundCats.put(categoryName, new Category(categoryName, 0));
             }
             if(grade < 0) {
                 foundCats.get(categoryName).addAssignment(new Assignment(name, weight));
             } else {
                 foundCats.get(categoryName).addAssignment(new Assignment(name, weight, grade));
+            }*/
+
+            Category cat = new Category(catName, catWeight);
+
+            Cursor ac = db.rawQuery("select * from " + CanISkipClassContract.AssignmentEntry.TABLE_NAME + "WHERE " +
+                    CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME + " = " + catName, null);
+
+
+            ac.moveToFirst();
+
+            while(!ac.isAfterLast()) {
+
+                String aName = ac.getString(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME));
+                int aWeight = ac.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT));
+                int aGrade = ac.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE));
+
+                Assignment assignment = new Assignment(aName, aWeight, aGrade);
+
+                //foundCats.Add
+                ac.moveToNext();
             }
+
 
             c.moveToNext();
 
         }
 
         c.close();
-        for(Category ca : foundCats.values()) {
+        /*for(Category ca : foundCats.values()) {
             categoryList.add(ca);
-        }
+        }*/
 
 
         createCollection();

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import group5.caniskipclass.models.Category;
 import group5.caniskipclass.persistence.CanISkipClassContract.*;
 
 /**
@@ -29,11 +30,18 @@ public class CanISkipClassDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + AssignmentEntry.TABLE_NAME + " (" +
                     AssignmentEntry._ID + " INTEGER PRIMARY KEY," +
                     AssignmentEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
-                    AssignmentEntry.COLUMN_NAME_CATEGORY + TEXT_TYPE + COMMA_SEP +
                     AssignmentEntry.COLUMN_NAME_GRADE + INTEGER_TYPE + COMMA_SEP +
                     AssignmentEntry.COLUMN_NAME_WEIGHT + INTEGER_TYPE + COMMA_SEP +
-                    AssignmentEntry.COLUMN_NAME_CLASS_ID + INTEGER_TYPE + COMMA_SEP +
-                    "FOREIGN KEY (" + AssignmentEntry.COLUMN_NAME_CLASS_ID + ") REFERENCES " + CourseEntry.TABLE_NAME + " (" + CourseEntry._ID + ")"+
+                    AssignmentEntry.COLUMN_NAME_CATEGORY_ID + INTEGER_TYPE + COMMA_SEP +
+                    "FOREIGN KEY (" + AssignmentEntry.COLUMN_NAME_CATEGORY_ID + ") REFERENCES " + CategoryEntry.TABLE_NAME + " (" + CategoryEntry._ID + ")"+
+                    " )";
+    private static final String SQL_CREATE_CATEGORY_TABLE =
+            "CREATE TABLE " + CategoryEntry.TABLE_NAME + " (" +
+                    CategoryEntry._ID + "INTEGER PRIMARY KEY," +
+                    CategoryEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
+                    CategoryEntry.COLUMN_NAME_WEIGHT + TEXT_TYPE + COMMA_SEP +
+                    CategoryEntry.COLUMN_NAME_COURSE_ID + INTEGER_TYPE + COMMA_SEP +
+                    "FOREIGN KEY (" + CategoryEntry.COLUMN_NAME_COURSE_ID + ") REFERENCES " + CourseEntry.TABLE_NAME + " (" + CourseEntry._ID + ")" +
                     " )";
 
     private static final String SQL_DELETE_ENTRIES =

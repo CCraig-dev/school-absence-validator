@@ -67,12 +67,12 @@ public class Course {
         SQLiteDatabase db = dbhelp.getWritableDatabase();
 
         // Define 'where' part of query.
-        String cSelection = CanISkipClassContract.CourseEntry._ID + "=?";
+        String cSelection = CanISkipClassContract.CategoryEntry._ID + "=?";
         // Specify arguments in placeholder order.
         String[] cSelectionArgs = { String.valueOf(id) };
         // Issue SQL statement.
 
-        String aSelection = CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CLASS_ID + "=?";
+        String aSelection = CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY_ID + "=?";
         // Specify arguments in placeholder order.
         String[] aSelectionArgs = { String.valueOf(id) };
         // Issue SQL statement.
@@ -94,8 +94,7 @@ public class Course {
         values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME, newAssignment.getName());
         values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE, newAssignment.getGrade());
         values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT, newAssignment.getWeight());
-        values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY, cat);
-        values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CLASS_ID, id);
+        values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY_ID, id);
 
         long newRowId;
         newRowId = db.insert(
