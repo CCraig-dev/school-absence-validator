@@ -2,6 +2,7 @@ package group5.caniskipclass.views;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -82,13 +83,17 @@ public class CourseDetailActivity extends ActionBarActivity {
         Cursor c = db.rawQuery("select * from " + CanISkipClassContract.CategoryEntry.TABLE_NAME + " WHERE " +
                 CanISkipClassContract.CategoryEntry.COLUMN_NAME_COURSE_ID + " = " + thisCourse.getId(), null);
 
+        System.out.println("db queried");
+
 
         c.moveToFirst();
 
-        HashMap<String, Category> foundCats = new HashMap<>();
+        //HashMap<String, Category> foundCats = new HashMap<>();
 
         while(!c.isAfterLast()) {
             String catName = c.getString(c.getColumnIndex(CanISkipClassContract.CategoryEntry.COLUMN_NAME_NAME));
+            System.out.println("Category found from db: " + catName);
+
 
             int catWeight = c.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT));
 
@@ -96,7 +101,7 @@ public class CourseDetailActivity extends ActionBarActivity {
 
             //String categoryName = c.getString(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY));
 
-            // if this category hasn't been seen yet, create it
+            //if this category hasn't been seen yet, create it
             /*if(!foundCats.containsKey(categoryName)) {
                 foundCats.put(categoryName, new Category(categoryName, 0));
             }
@@ -108,22 +113,28 @@ public class CourseDetailActivity extends ActionBarActivity {
 
             Category cat = new Category(catName, catWeight);
 
-            Cursor ac = db.rawQuery("select * from " + CanISkipClassContract.AssignmentEntry.TABLE_NAME + "WHERE " +
-                    CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME + " = " + catName, null);
+            if(categoryList.contains(cat)) {
 
+                Cursor ac = db.rawQuery("select * from " + CanISkipClassContract.AssignmentEntry.TABLE_NAME + "WHERE " +
+                        CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME + " = " + catName, null);
 
-            ac.moveToFirst();
+                ac.moveToFirst();
 
-            while(!ac.isAfterLast()) {
+                while (!ac.isAfterLast()) {
 
-                String aName = ac.getString(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME));
-                int aWeight = ac.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT));
-                int aGrade = ac.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE));
+                    String aName = ac.getString(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME));
+                    int aWeight = ac.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT));
+                    int aGrade = ac.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE));
 
-                Assignment assignment = new Assignment(aName, aWeight, aGrade);
+                    Assignment assignment = new Assignment(aName, aWeight, aGrade);
 
-                //foundCats.Add
-                ac.moveToNext();
+                    cat.addAssignment(assignment);
+                    ac.moveToNext();
+                }
+
+                ac.close();
+
+                categoryList.add(cat);
             }
 
 
@@ -132,6 +143,7 @@ public class CourseDetailActivity extends ActionBarActivity {
         }
 
         c.close();
+        db.close();
         /*for(Category ca : foundCats.values()) {
             categoryList.add(ca);
         }*/
@@ -186,6 +198,14 @@ public class CourseDetailActivity extends ActionBarActivity {
                     int weight = Integer.parseInt(weightField.getText().toString());
                     System.out.println("Category name: " + name + " weight: " + weight);
 
+                    CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(CourseDetailActivity.this);
+                    SQLiteDatabase db = dbhelp.getWritableDatabase();
+
+                    ContentValues values = new ContentValues();
+                    values.put(CanISkipClassContract.CategoryEntry.COLUMN_NAME_NAME, name);
+                    values.put(CanISkipClassContract.CategoryEntry.COLUMN_NAME_WEIGHT, weight);
+                    values.put(CanISkipClassContract.CategoryEntry.COLUMN_NAME_COURSE_ID, thisCourse.getId());
+
                     categoryList.add(new Category(name,weight));
                     updateList();
                     newCatDialog.dismiss();
@@ -199,30 +219,6 @@ public class CourseDetailActivity extends ActionBarActivity {
                 newCatDialog.dismiss();
             }
         });
-        //AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        //alert.setTitle(R.layout.dialog_add_category);
-        /*alert.setTitle("Add New Category");
-
-        final EditText name = new EditText(this);
-        final EditText weight = new EditText(this);
-        weight.setInputType(InputType.TYPE_CLASS_NUMBER);
-        alert.setView(name);
-
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String nameVal = name.getText().toString();
-                int weightVal = Integer.parseInt(weight.getText().toString());
-                // Do something with value!
-                System.out.println("Category added.");
-                Category category = new Category(nameVal, weightVal);
-            }
-        });
-
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
-            }
-        });*/
 
         newCatDialog.show();
     }

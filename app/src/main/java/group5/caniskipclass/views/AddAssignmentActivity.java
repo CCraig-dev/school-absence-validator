@@ -4,13 +4,20 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import group5.caniskipclass.CourseList;
 import group5.caniskipclass.models.Course;
@@ -70,13 +77,36 @@ public class AddAssignmentActivity extends ActionBarActivity {
     }
 
     public void confirmAdd(View view) {
-        EditText aCategory = ((EditText) findViewById(R.id.assignment_category));
+        //EditText aCategory = ((EditText) findViewById(R.id.assignment_category));
+        Spinner aCategory = ((Spinner) findViewById(R.id.category_spinner));
         EditText aName = ((EditText) findViewById(R.id.assignment_name));
         EditText grade = ((EditText) findViewById(R.id.assignment_grade));
         EditText weight = ((EditText) findViewById(R.id.assignment_weight));
 
+
+        String selectQuery = "SELECT "+ CanISkipClassContract.CategoryEntry.COLUMN_NAME_NAME+
+                " FROM " + CanISkipClassContract.CategoryEntry.TABLE_NAME + " WHERE " +
+                CanISkipClassContract.CategoryEntry.COLUMN_NAME_COURSE_ID + " = " + courseId;
+
+        CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(this);
+        SQLiteDatabase db = dbhelp.getWritableDatabase();
+
+        String[] fromColumns = {
+                CanISkipClassContract.CategoryEntry.COLUMN_NAME_NAME
+        };
+
+        int[] toViews = {
+                android.R.id.text1
+        };
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c, fromColumns, toViews, 1);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        aCategory.setAdapter(adapter);
+
         // validate the fields
-        if (aName.getText().length() == 0 || grade.getText().length() == 0 || aCategory.getText().length() == 0 ) {
+        if (aName.getText().length() == 0 || grade.getText().length() == 0 || aCategory.getSelectedItem() == null ) {
             new AlertDialog.Builder(this)
                     .setTitle("Incomplete Fields")
                     .setMessage("Please fill in all fields before submitting.")
@@ -93,7 +123,7 @@ public class AddAssignmentActivity extends ActionBarActivity {
                     Integer.parseInt(weight.getText().toString()),
                     Integer.parseInt(grade.getText().toString()));
 
-            inCourse.addAssignment(newAssignment, aCategory.getText().toString(), this);
+            inCourse.addAssignment(newAssignment, aCategory.getSelectedItem().toString(), this);
 
             finish();
         }

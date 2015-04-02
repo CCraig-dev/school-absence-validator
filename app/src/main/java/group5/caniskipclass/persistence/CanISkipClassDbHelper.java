@@ -73,6 +73,7 @@ public class CanISkipClassDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_COURSE_TABLE);
         db.execSQL(SQL_CREATE_ASSIGNMENT_TABLE);
+        db.execSQL(SQL_CREATE_CATEGORY_TABLE);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
