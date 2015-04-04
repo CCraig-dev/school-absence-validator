@@ -7,6 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
+import group5.caniskipclass.models.Course;
+import group5.caniskipclass.persistence.CanISkipClassContract;
+import group5.caniskipclass.persistence.CanISkipClassDbHelper;
+
 /**
  * Created by jcdesimp on 2/25/15.
  */
@@ -97,6 +101,33 @@ public class CourseList {
         return courses;
     }
 
+    public Course getCourseById(long id) {
+
+        CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(appcontext);
+        SQLiteDatabase db = dbhelp.getWritableDatabase();
+
+        Cursor c = db.rawQuery("select * from " + CanISkipClassContract.CourseEntry.TABLE_NAME + " where _id=" + id, null);
+
+        c.moveToFirst();
+
+        if(!c.isAfterLast()) {
+            String name = c.getString(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_NAME));
+            int cid = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry._ID));
+            String minGrade = c.getString(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_MIN_GRADE));
+            int numAllowedAbsences = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE));
+            Course nc = new Course(name, minGrade, numAllowedAbsences);
+            nc.setId(cid);
+            c.close();
+
+            return nc;
+        }
+
+        c.close();
+        return null;
+
+
+
+    }
 
 
 }

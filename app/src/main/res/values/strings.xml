@@ -18,4 +18,7 @@
     <string name="assignment_weight_label">Weight:</string>
     <string name="enter_assignment_hint">Enter Assignment Name</string>
     <string name="assignment_cat_label">Category </string>
+    <string name="remove_course">Remove Course</string>
+    <string name="category_name">Name</string>
+    <string name="category_weight">Weight</string>
 </resources>

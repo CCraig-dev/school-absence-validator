@@ -1,10 +1,7 @@
-package group5.caniskipclass;
+package group5.caniskipclass.views;
 
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,7 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import group5.caniskipclass.CanISkipClassContract.*;
+import group5.caniskipclass.CourseList;
+import group5.caniskipclass.R;
+import group5.caniskipclass.models.Course;
 
 
 public class AddCourseActivity extends ActionBarActivity {

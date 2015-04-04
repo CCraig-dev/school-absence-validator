@@ -1,4 +1,4 @@
-package group5.caniskipclass;
+package group5.caniskipclass.persistence;
 
 import android.provider.BaseColumns;
 
@@ -18,12 +18,22 @@ public final class CanISkipClassContract {
     public static abstract class AssignmentEntry implements BaseColumns {
         public static final String TABLE_NAME = "assignment";
         public static final String COLUMN_NAME_NAME = "name";
-        public static final String COLUMN_NAME_CATEGORY = "category";
         public static final String COLUMN_NAME_GRADE = "grade";
         public static final String COLUMN_NAME_WEIGHT = "weight";
-        public static final String COLUMN_NAME_CLASS_ID = "class_id";
+        public static final String COLUMN_NAME_CATEGORY_ID = "category_id";
 
     }
+
+    public static abstract class CategoryEntry implements BaseColumns {
+        public static final String TABLE_NAME = "category";
+        public static final String COLUMN_NAME_NAME = "name";
+        public static final String COLUMN_NAME_WEIGHT = "weight";
+        public static final String COLUMN_NAME_COURSE_ID = "course_id";
+    }
+
+
+
+
 
 
 
