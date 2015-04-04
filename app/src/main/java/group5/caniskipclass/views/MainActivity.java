@@ -13,7 +13,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import group5.caniskipclass.CourseList;
+import group5.caniskipclass.MainListViewAdapter;
 import group5.caniskipclass.R;
+import group5.caniskipclass.models.Course;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -34,7 +36,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         courseList = CourseList.getInstance(this);
-
         setContentView(R.layout.activity_main);
 
         updateList();
@@ -42,12 +43,12 @@ public class MainActivity extends ActionBarActivity {
 
     private void updateList() {
 
-        ArrayList<String> cl = courseList.getCourseNames();
+        ArrayList<Course> cl = courseList.getCourses();
 
         ListView lv = (ListView) findViewById(R.id.courselist);
 
-        lv.setAdapter(new ArrayAdapter<>(this, R.layout.list_item, R.id.course_name, cl));
-
+        lv.setAdapter(new MainListViewAdapter(this, cl));
+        lv.setClickable(true);
         //set onClick event listener to move to CourseDetailActivity
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

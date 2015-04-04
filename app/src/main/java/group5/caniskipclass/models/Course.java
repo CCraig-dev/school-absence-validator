@@ -106,5 +106,6 @@ public class Course {
 
     }
 
+    public int getGrade()
 
 }
