@@ -11,6 +11,7 @@ public class Assignment {
     private String name;
     private String category;
     private boolean isGraded;
+    private long id;
 
     public Assignment(String name, double weight)
     {
@@ -25,8 +26,8 @@ public class Assignment {
         this.name = name;
         this.weight = weight;
         this.grade = grade;
-
         isGraded = true;
+        this.id = 0;
     }
 
     public String getName(){ return name; }
@@ -41,4 +42,8 @@ public class Assignment {
     public void setGrade(double grade) {
         this.grade = grade;
     }
+
+    public void setID(long id) { this.id = id; }
+
+    public long getID() { return id; }
 }

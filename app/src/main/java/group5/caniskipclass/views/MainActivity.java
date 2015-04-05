@@ -8,7 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         courseList = CourseList.getInstance(this);
         setContentView(R.layout.activity_main);
+
 
         updateList();
     }
@@ -85,6 +88,17 @@ public class MainActivity extends ActionBarActivity {
             startActivity(intent);
         }
 
+        // This is for the database viewer
+        // TODO: remove
+        else if (id == R.id.database_view) {
+            Intent dbmanager = new Intent(this,AndroidDatabaseManager.class);
+            startActivity(dbmanager);
+        }
+
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
 }
