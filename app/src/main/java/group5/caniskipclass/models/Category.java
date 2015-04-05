@@ -17,6 +17,7 @@ public class Category {
         this.name = name;
         this.weight = weight;
         this.id = id;
+        assignments = new ArrayList<Assignment>();
     }
 
     public Category(String name, double weight){
@@ -24,6 +25,7 @@ public class Category {
         this.name = name;
         this.weight = weight;
         long id = 0;
+        assignments = new ArrayList<Assignment>();
     }
 
     public ArrayList<Assignment> getAssignments() {

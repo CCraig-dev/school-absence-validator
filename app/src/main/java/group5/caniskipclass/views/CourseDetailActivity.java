@@ -82,6 +82,7 @@ public class CourseDetailActivity extends ActionBarActivity {
         String categoryQuery = "select * from " + CanISkipClassContract.CategoryEntry.TABLE_NAME + " WHERE " +
                 CanISkipClassContract.CategoryEntry.COLUMN_NAME_COURSE_ID + " = " + thisCourse.getId();
         System.out.println("Category Query: " + categoryQuery);
+
         Cursor c = db.rawQuery(categoryQuery, null);
 
         System.out.println("db queried");
@@ -92,6 +93,7 @@ public class CourseDetailActivity extends ActionBarActivity {
         //HashMap<String, Category> foundCats = new HashMap<>();
         // Loop through the categories
         while(!c.isAfterLast()) {
+            Category currentCategory = null;
             String catName = c.getString(c.getColumnIndex(CanISkipClassContract.CategoryEntry.COLUMN_NAME_NAME));
 
             System.out.println("Category found from db: " + catName);
@@ -104,12 +106,15 @@ public class CourseDetailActivity extends ActionBarActivity {
             // Loop through the list to see if the category is already in it
             boolean categoryInList = false;
             for (Category category : categoryList){
-                if (category.getId() == catID)
+                if (category.getId() == catID) {
                     categoryInList = true;
+                    currentCategory = category;
+                }
             }
             // If the category is not in the list, add it
             if (!categoryInList){
-                categoryList.add(new Category(catName, catWeight, catID));
+                currentCategory = new Category(catName, catWeight, catID);
+                categoryList.add(currentCategory);
             }
             //int weight = c.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT));
 
@@ -129,16 +134,35 @@ public class CourseDetailActivity extends ActionBarActivity {
             Cursor ac = db.rawQuery("select * from " + CanISkipClassContract.AssignmentEntry.TABLE_NAME + " WHERE " +
                     CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY_ID + " = " + catID, null);
 
-            ac.moveToFirst();
+            // Make sure we pull back records for the cursor
+            if (ac.getCount() > 0) {
+                ac.moveToFirst();
 
-            while (!ac.isAfterLast()) {
+                while (!ac.isAfterLast() && !ac.isBeforeFirst()) {
 
-                String aName = ac.getString(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME));
-                int aWeight = ac.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT));
-                int aGrade = ac.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE));
+                    String aName = ac.getString(ac.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME));
+                    // Get the weight index and weight from database
+                    int weightIndex = ac.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT);
+                    int aWeight = ac.getInt(weightIndex);
+                    // Get the grade index and grade from the database
+                    int gradeIndex = ac.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE);
+                    int aGrade = ac.getInt(gradeIndex);
 
-                Assignment assignment = new Assignment(aName, aWeight, aGrade);
-                ac.moveToNext();
+                    // Create new assignment object with query results
+                    Assignment assignment = new Assignment(aName, aWeight, aGrade);
+                    ArrayList<String> currentAssignments = currentCategory.getAssignmentNames();
+                    boolean assignmentInList = false;
+                    for (String assignmentName : currentAssignments)
+                    {
+                        if (assignmentName.equals(aName)) {
+                            assignmentInList = true;
+                        }
+                    }
+                    if (!assignmentInList)
+                        currentCategory.addAssignment(assignment);
+
+                    ac.moveToNext();
+                }
             }
             ac.close();
 
