@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import group5.caniskipclass.CourseList;
+import group5.caniskipclass.models.Category;
 import group5.caniskipclass.models.Course;
 import group5.caniskipclass.persistence.CanISkipClassContract;
 import group5.caniskipclass.persistence.CanISkipClassDbHelper;
@@ -102,7 +103,13 @@ public class AddAssignmentActivity extends ActionBarActivity {
                     Integer.parseInt(weight.getText().toString()),
                     Integer.parseInt(grade.getText().toString()));
 
-            inCourse.addAssignment(newAssignment, aCategory.getSelectedItem().toString(), this);
+
+            Cursor cursor = (Cursor) aCategory.getSelectedItem();
+            String name = cursor.getString(cursor.getColumnIndex(CanISkipClassContract.CategoryEntry.COLUMN_NAME_NAME));
+            inCourse.addAssignment(newAssignment, name, this);
+
+
+
 
             finish();
         }
