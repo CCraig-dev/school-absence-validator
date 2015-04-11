@@ -2,7 +2,9 @@ package group5.caniskipclass.views;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ExpandableListActivity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +15,7 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -73,12 +76,6 @@ public class CourseDetailActivity extends ActionBarActivity {
 
         CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(CourseDetailActivity.this);
         SQLiteDatabase db = dbhelp.getWritableDatabase();
-
-        //ListView lv = (ListView) findViewById(R.id.categorylist);
-        //lv.setAdapter(new ArrayAdapter<>(this, R.layout.category_list_item, R.id.category_name, cl));
-
-        //categoryList = new ArrayList<Category>();
-
         String categoryQuery = "select * from " + CanISkipClassContract.CategoryEntry.TABLE_NAME + " WHERE " +
                 CanISkipClassContract.CategoryEntry.COLUMN_NAME_COURSE_ID + " = " + thisCourse.getId();
         System.out.println("Category Query: " + categoryQuery);
@@ -90,7 +87,6 @@ public class CourseDetailActivity extends ActionBarActivity {
 
         c.moveToFirst();
 
-        //HashMap<String, Category> foundCats = new HashMap<>();
         // Loop through the categories
         while(!c.isAfterLast()) {
             Category currentCategory = null;
@@ -116,19 +112,6 @@ public class CourseDetailActivity extends ActionBarActivity {
                 currentCategory = new Category(catName, catWeight, catID);
                 categoryList.add(currentCategory);
             }
-            //int weight = c.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT));
-
-            //String categoryName = c.getString(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY));
-
-            //if this category hasn't been seen yet, create it
-            /*if(!foundCats.containsKey(categoryName)) {
-                foundCats.put(categoryName, new Category(categoryName, 0));
-            }
-            if(grade < 0) {
-                foundCats.get(categoryName).addAssignment(new Assignment(name, weight));
-            } else {
-                foundCats.get(categoryName).addAssignment(new Assignment(name, weight, grade));
-            }*/
 
             // Get all the assignments for the category
             Cursor ac = db.rawQuery("select * from " + CanISkipClassContract.AssignmentEntry.TABLE_NAME + " WHERE " +
@@ -169,9 +152,6 @@ public class CourseDetailActivity extends ActionBarActivity {
             c.moveToNext();
         }
             db.close();
-        /*for(Category ca : foundCats.values()) {
-            categoryList.add(ca);
-        }*/
 
 
         createCollection();
@@ -179,7 +159,47 @@ public class CourseDetailActivity extends ActionBarActivity {
 
         ExpandableListView elv = (ExpandableListView) findViewById(R.id.category_list);
 
-        elv.setAdapter(new CategoryListViewAdapter(this, categoryList, categorizedAssignments, position));
+        final CategoryListViewAdapter adapter = new CategoryListViewAdapter(this, categoryList, categorizedAssignments, position);
+
+        elv.setAdapter(adapter);
+
+        elv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                    int childPosition = ExpandableListView.getPackedPositionChild(id);
+
+                    // You now have everything that you would as if this was an OnChildClickListener()
+                    // Add your logic here.
+
+                    //Assignment assignment = (Assignment) parent.getEx(groupPosition, childPosition);
+                    final Assignment assignment = (Assignment) adapter.getChild(groupPosition,childPosition);
+
+                    new AlertDialog.Builder(view.getContext())
+                            .setTitle("Delete Assignment")
+                            .setMessage("Are you sure you want to delete "+assignment.getName()+"? This action cannot be undone.")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with delete
+                                    assignment.delete(getApplicationContext());
+                                    updateList();
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // cancel deletion
+
+                                }
+                            })
+                            .show();
+                    // Return true as we are handling the event.
+                    return true;
+                }
+
+                return false;
+            }
+        });
     }
 
     private void createCollection() {

@@ -102,7 +102,7 @@ public class Course {
             values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME, newAssignment.getName());
             values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE, newAssignment.getGrade());
             values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT, newAssignment.getWeight());
-            values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY_ID, id);
+            values.put(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY_ID, getCategoryId(cat,appcontext));
 
             long newRowId;
             newRowId = db.insert(
@@ -150,6 +150,26 @@ public class Course {
                 db.close();
             }
         }
+    }
+
+    public int getCategoryId(String name, Context appcontext) {
+
+        CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(appcontext);
+        SQLiteDatabase db = dbhelp.getWritableDatabase();
+
+        Cursor c = db.rawQuery("select * from " + CanISkipClassContract.CategoryEntry.TABLE_NAME + " where " + CanISkipClassContract.CategoryEntry.COLUMN_NAME_NAME + "='" + name+ "'", null);
+
+        c.moveToFirst();
+
+        if(!c.isAfterLast()) {
+            int cid = c.getInt(c.getColumnIndex(CanISkipClassContract.CategoryEntry._ID));
+
+            return cid;
+        }
+
+        c.close();
+        return -1;
+
     }
 
    //public int getGrade()
