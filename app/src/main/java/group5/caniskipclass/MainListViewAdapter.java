@@ -70,6 +70,9 @@ public class MainListViewAdapter extends BaseAdapter {
 
             @Override
             public void onClick(View view){
+
+                GradeCalculation gradeCalc = new GradeCalculation(context);
+                System.out.println("Grade: " + gradeCalc.getGrade(course));
                 Intent courseDetail = new Intent(context, CourseDetailActivity.class);
                 courseDetail.putExtra("position", pos);
                 context.startActivity(courseDetail);

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import group5.caniskipclass.CourseList;
+import group5.caniskipclass.GradeCalculation;
 import group5.caniskipclass.MainListViewAdapter;
 import group5.caniskipclass.R;
 import group5.caniskipclass.models.Course;
@@ -23,7 +24,7 @@ import group5.caniskipclass.models.Course;
 public class MainActivity extends ActionBarActivity {
 
     //todo default course values here, remove at later time and retrieve from storage instead
-    //String[] courseList = {"Trends in SE", "Physics", "Calculus", "Computer Science", "English", "Web Development"};
+    //String[] courseList = "Trends in SE", "Physics", "Calculus", "Computer Science", "English", "Web Development"};
     CourseList courseList;
 
     @Override
