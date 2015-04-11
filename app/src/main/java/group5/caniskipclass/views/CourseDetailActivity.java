@@ -2,6 +2,7 @@ package group5.caniskipclass.views;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ExpandableListActivity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import group5.caniskipclass.GradeCalculation;
 import group5.caniskipclass.persistence.CanISkipClassContract;
 import group5.caniskipclass.persistence.CanISkipClassDbHelper;
 import group5.caniskipclass.CategoryListViewAdapter;
@@ -57,9 +60,6 @@ public class CourseDetailActivity extends ActionBarActivity {
         String courseName = thisCourse.getName();
         setTitle(courseName);
         categoryList = new ArrayList<Category>();
-
-
-
         updateList();
 
     }
@@ -173,11 +173,11 @@ public class CourseDetailActivity extends ActionBarActivity {
                     // Add your logic here.
 
                     //Assignment assignment = (Assignment) parent.getEx(groupPosition, childPosition);
-                    final Assignment assignment = (Assignment) adapter.getChild(groupPosition,childPosition);
+                    final Assignment assignment = (Assignment) adapter.getChild(groupPosition, childPosition);
 
                     new AlertDialog.Builder(view.getContext())
                             .setTitle("Delete Assignment")
-                            .setMessage("Are you sure you want to delete "+assignment.getName()+"? This action cannot be undone.")
+                            .setMessage("Are you sure you want to delete " + assignment.getName() + "? This action cannot be undone.")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     // continue with delete
@@ -265,6 +265,20 @@ public class CourseDetailActivity extends ActionBarActivity {
         });
 
         newCatDialog.show();
+    }
+
+    public void getCurrentGrade(View view){
+        GradeCalculation gradeCalc = new GradeCalculation(view.getContext());
+        double grade = gradeCalc.getGrade(thisCourse);
+        new AlertDialog.Builder(this)
+                .setTitle("Current Grade")
+                .setMessage("Your current grade for " + thisCourse.getName() + " is " + grade)
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
     @Override

@@ -12,14 +12,33 @@
         android:layout_height="wrap_content"
         android:layout_weight="5"/>
 
-    <Button
-        android:id="@+id/add_cat_button"
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:text="Add Category"
-        android:textSize="12dp"
-        android:onClick="OnAddCategoryClicked"
-        android:layout_weight="1"/>
+        android:layout_height="35dp">
+
+        <Button
+            android:id="@+id/add_cat_button"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="Add Category"
+            android:textSize="12dp"
+            android:onClick="OnAddCategoryClicked"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/get_grade_button"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="Get Current Grade"
+            android:textSize="12dp"
+            android:onClick="getCurrentGrade"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
 </LinearLayout>
