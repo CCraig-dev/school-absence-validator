@@ -2,6 +2,9 @@ package group5.caniskipclass.views;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ExpandableListActivity;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,6 +15,7 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -72,69 +76,82 @@ public class CourseDetailActivity extends ActionBarActivity {
 
         CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(CourseDetailActivity.this);
         SQLiteDatabase db = dbhelp.getWritableDatabase();
+        String categoryQuery = "select * from " + CanISkipClassContract.CategoryEntry.TABLE_NAME + " WHERE " +
+                CanISkipClassContract.CategoryEntry.COLUMN_NAME_COURSE_ID + " = " + thisCourse.getId();
+        System.out.println("Category Query: " + categoryQuery);
 
-        //ListView lv = (ListView) findViewById(R.id.categorylist);
-        //lv.setAdapter(new ArrayAdapter<>(this, R.layout.category_list_item, R.id.category_name, cl));
+        Cursor c = db.rawQuery(categoryQuery, null);
 
-        //categoryList = new ArrayList<Category>();
-
-
-        Cursor c = db.rawQuery("select * from " + CanISkipClassContract.CategoryEntry.TABLE_NAME + " WHERE " +
-                CanISkipClassContract.CategoryEntry.COLUMN_NAME_COURSE_ID + " = " + thisCourse.getId(), null);
+        System.out.println("db queried");
 
 
         c.moveToFirst();
 
-        HashMap<String, Category> foundCats = new HashMap<>();
-
+        // Loop through the categories
         while(!c.isAfterLast()) {
+            Category currentCategory = null;
             String catName = c.getString(c.getColumnIndex(CanISkipClassContract.CategoryEntry.COLUMN_NAME_NAME));
+
+            System.out.println("Category found from db: " + catName);
+
 
             int catWeight = c.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT));
 
-            //int weight = c.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT));
+            int catID = c.getInt(c.getColumnIndex(CanISkipClassContract.CategoryEntry._ID));
 
-            //String categoryName = c.getString(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY));
-
-            // if this category hasn't been seen yet, create it
-            /*if(!foundCats.containsKey(categoryName)) {
-                foundCats.put(categoryName, new Category(categoryName, 0));
+            // Loop through the list to see if the category is already in it
+            boolean categoryInList = false;
+            for (Category category : categoryList){
+                if (category.getId() == catID) {
+                    categoryInList = true;
+                    currentCategory = category;
+                }
             }
-            if(grade < 0) {
-                foundCats.get(categoryName).addAssignment(new Assignment(name, weight));
-            } else {
-                foundCats.get(categoryName).addAssignment(new Assignment(name, weight, grade));
-            }*/
-
-            Category cat = new Category(catName, catWeight);
-
-            Cursor ac = db.rawQuery("select * from " + CanISkipClassContract.AssignmentEntry.TABLE_NAME + "WHERE " +
-                    CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME + " = " + catName, null);
-
-
-            ac.moveToFirst();
-
-            while(!ac.isAfterLast()) {
-
-                String aName = ac.getString(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME));
-                int aWeight = ac.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT));
-                int aGrade = ac.getInt(c.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE));
-
-                Assignment assignment = new Assignment(aName, aWeight, aGrade);
-
-                //foundCats.Add
-                ac.moveToNext();
+            // If the category is not in the list, add it
+            if (!categoryInList){
+                currentCategory = new Category(catName, catWeight, catID);
+                categoryList.add(currentCategory);
             }
 
+            // Get all the assignments for the category
+            Cursor ac = db.rawQuery("select * from " + CanISkipClassContract.AssignmentEntry.TABLE_NAME + " WHERE " +
+                    CanISkipClassContract.AssignmentEntry.COLUMN_NAME_CATEGORY_ID + " = " + catID, null);
+
+            // Make sure we pull back records for the cursor
+            if (ac.getCount() > 0) {
+                ac.moveToFirst();
+
+                while (!ac.isAfterLast() && !ac.isBeforeFirst()) {
+
+                    String aName = ac.getString(ac.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_NAME));
+                    // Get the weight index and weight from database
+                    int weightIndex = ac.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_WEIGHT);
+                    int aWeight = ac.getInt(weightIndex);
+                    // Get the grade index and grade from the database
+                    int gradeIndex = ac.getColumnIndex(CanISkipClassContract.AssignmentEntry.COLUMN_NAME_GRADE);
+                    int aGrade = ac.getInt(gradeIndex);
+
+                    // Create new assignment object with query results
+                    Assignment assignment = new Assignment(aName, aWeight, aGrade);
+                    ArrayList<String> currentAssignments = currentCategory.getAssignmentNames();
+                    boolean assignmentInList = false;
+                    for (String assignmentName : currentAssignments)
+                    {
+                        if (assignmentName.equals(aName)) {
+                            assignmentInList = true;
+                        }
+                    }
+                    if (!assignmentInList)
+                        currentCategory.addAssignment(assignment);
+
+                    ac.moveToNext();
+                }
+            }
+            ac.close();
 
             c.moveToNext();
-
         }
-
-        c.close();
-        /*for(Category ca : foundCats.values()) {
-            categoryList.add(ca);
-        }*/
+            db.close();
 
 
         createCollection();
@@ -142,7 +159,47 @@ public class CourseDetailActivity extends ActionBarActivity {
 
         ExpandableListView elv = (ExpandableListView) findViewById(R.id.category_list);
 
-        elv.setAdapter(new CategoryListViewAdapter(this, categoryList, categorizedAssignments, position));
+        final CategoryListViewAdapter adapter = new CategoryListViewAdapter(this, categoryList, categorizedAssignments, position);
+
+        elv.setAdapter(adapter);
+
+        elv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                    int childPosition = ExpandableListView.getPackedPositionChild(id);
+
+                    // You now have everything that you would as if this was an OnChildClickListener()
+                    // Add your logic here.
+
+                    //Assignment assignment = (Assignment) parent.getEx(groupPosition, childPosition);
+                    final Assignment assignment = (Assignment) adapter.getChild(groupPosition,childPosition);
+
+                    new AlertDialog.Builder(view.getContext())
+                            .setTitle("Delete Assignment")
+                            .setMessage("Are you sure you want to delete "+assignment.getName()+"? This action cannot be undone.")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with delete
+                                    assignment.delete(getApplicationContext());
+                                    updateList();
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // cancel deletion
+
+                                }
+                            })
+                            .show();
+                    // Return true as we are handling the event.
+                    return true;
+                }
+
+                return false;
+            }
+        });
     }
 
     private void createCollection() {
@@ -185,8 +242,15 @@ public class CourseDetailActivity extends ActionBarActivity {
                     String name = (String) nameField.getText().toString();
                     int weight = Integer.parseInt(weightField.getText().toString());
                     System.out.println("Category name: " + name + " weight: " + weight);
+                    Category category = new Category(name, weight);
+                    thisCourse.addCategory(category, getApplicationContext());
+//
+//                    ContentValues values = new ContentValues();
+//                    values.put(CanISkipClassContract.CategoryEntry.COLUMN_NAME_NAME, name);
+//                    values.put(CanISkipClassContract.CategoryEntry.COLUMN_NAME_WEIGHT, weight);
+//                    values.put(CanISkipClassContract.CategoryEntry.COLUMN_NAME_COURSE_ID, thisCourse.getId());
 
-                    categoryList.add(new Category(name,weight));
+                    categoryList.add(category);
                     updateList();
                     newCatDialog.dismiss();
                 }
@@ -199,30 +263,6 @@ public class CourseDetailActivity extends ActionBarActivity {
                 newCatDialog.dismiss();
             }
         });
-        //AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        //alert.setTitle(R.layout.dialog_add_category);
-        /*alert.setTitle("Add New Category");
-
-        final EditText name = new EditText(this);
-        final EditText weight = new EditText(this);
-        weight.setInputType(InputType.TYPE_CLASS_NUMBER);
-        alert.setView(name);
-
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String nameVal = name.getText().toString();
-                int weightVal = Integer.parseInt(weight.getText().toString());
-                // Do something with value!
-                System.out.println("Category added.");
-                Category category = new Category(nameVal, weightVal);
-            }
-        });
-
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
-            }
-        });*/
 
         newCatDialog.show();
     }

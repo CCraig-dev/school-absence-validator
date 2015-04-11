@@ -5,4 +5,8 @@
         android:icon="@drawable/ic_action_new"
         android:title="@string/action_add"
         app:showAsAction="ifRoom"/>
+    <item android:id="@+id/database_view"
+        android:icon="@drawable/db_view"
+        android:title="View Database"
+        app:showAsAction="ifRoom"/>
 </menu>

@@ -4,15 +4,23 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import group5.caniskipclass.CourseList;
+import group5.caniskipclass.models.Category;
 import group5.caniskipclass.models.Course;
 import group5.caniskipclass.persistence.CanISkipClassContract;
 import group5.caniskipclass.persistence.CanISkipClassDbHelper;
@@ -26,6 +34,7 @@ public class AddAssignmentActivity extends ActionBarActivity {
     String category;
     Course inCourse;
     long courseId;
+    Spinner aCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +44,7 @@ public class AddAssignmentActivity extends ActionBarActivity {
         courseId = getIntent().getExtras().getLong("courseId");
         inCourse = CourseList.getInstance(this).getCourseById(courseId);
         //category = getIntent().getExtras().getString("category");
-
+        populateCategories();
         setTitle("Add new Assignment");
     }
 
@@ -70,13 +79,14 @@ public class AddAssignmentActivity extends ActionBarActivity {
     }
 
     public void confirmAdd(View view) {
-        EditText aCategory = ((EditText) findViewById(R.id.assignment_category));
+        //EditText aCategory = ((EditText) findViewById(R.id.assignment_category));
+
         EditText aName = ((EditText) findViewById(R.id.assignment_name));
         EditText grade = ((EditText) findViewById(R.id.assignment_grade));
         EditText weight = ((EditText) findViewById(R.id.assignment_weight));
 
         // validate the fields
-        if (aName.getText().length() == 0 || grade.getText().length() == 0 || aCategory.getText().length() == 0 ) {
+        if (aName.getText().length() == 0 || grade.getText().length() == 0 || aCategory.getSelectedItem() == null ) {
             new AlertDialog.Builder(this)
                     .setTitle("Incomplete Fields")
                     .setMessage("Please fill in all fields before submitting.")
@@ -93,9 +103,40 @@ public class AddAssignmentActivity extends ActionBarActivity {
                     Integer.parseInt(weight.getText().toString()),
                     Integer.parseInt(grade.getText().toString()));
 
-            inCourse.addAssignment(newAssignment, aCategory.getText().toString(), this);
+
+            Cursor cursor = (Cursor) aCategory.getSelectedItem();
+            String name = cursor.getString(cursor.getColumnIndex(CanISkipClassContract.CategoryEntry.COLUMN_NAME_NAME));
+            inCourse.addAssignment(newAssignment, name, this);
+
+
+
 
             finish();
         }
+    }
+
+    public void populateCategories(){
+        System.out.println("**************Printing courses*******************");
+        aCategory = ((Spinner) findViewById(R.id.category_spinner));
+        String selectQuery = "SELECT * "+
+                " FROM " + CanISkipClassContract.CategoryEntry.TABLE_NAME + " WHERE " +
+                CanISkipClassContract.CategoryEntry.COLUMN_NAME_COURSE_ID + " = " + courseId;
+        System.out.println("Category Select for spinner: " + selectQuery);
+        CanISkipClassDbHelper dbhelp = CanISkipClassDbHelper.getInstance(this);
+        SQLiteDatabase db = dbhelp.getWritableDatabase();
+
+        String[] fromColumns = {
+                CanISkipClassContract.CategoryEntry.COLUMN_NAME_NAME
+        };
+
+        int[] toViews = {
+                android.R.id.text1
+        };
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, c, fromColumns, toViews, 1);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+
+        aCategory.setAdapter(adapter);
     }
 }
