@@ -44,8 +44,11 @@ public class GradeCalculation {
     public double getGrade(Course course){
         Map<List<Assignment>, Double> assignmentPoints = getWeightPerCategory(course);
         double grade = getAssignmentPoints(assignmentPoints);
-        grade = grade * 100;
+        Log.d(TAG, "Grade before skip subtract: " + grade);
+        grade = subtractSkipPoints(course, grade);
+        Log.d(TAG, "Grade after skip subtract: " + grade);
         grade = grade / totalGrade;
+        grade = grade * 100;
         Log.d(TAG, "Grade for course " + course.getName() + " " + grade);
         return Math.round(grade);
     }
@@ -138,6 +141,55 @@ public class GradeCalculation {
             }
         }
         return totalPoints;
+    }
+
+    public double subtractSkipPoints(Course course, double currentGrade){
+        // Get the needed information from course object
+        int percentlost = course.getPercentLostForSkip();
+        int numAllowedSkips = course.getNumAllowedAbsence();
+        int numSkips = course.getNumSkips();
+        // If you have skipped your number of allowed absences subtract points lost
+        if (numSkips >= numAllowedSkips)
+            currentGrade = currentGrade - (percentlost * numSkips);
+        return currentGrade;
+    }
+
+    public double getGradeIfSkipped(Course course, double currentGrade){
+        // Get the needed information from course object
+        int percentlost = course.getPercentLostForSkip();
+        int numAllowedSkips = course.getNumAllowedAbsence();
+        int numSkips = course.getNumSkips();
+        // If you have skipped your number of allowed absences subtract points lost
+        if (numSkips >= numAllowedSkips)
+            currentGrade = currentGrade - (percentlost * (numSkips + 1));
+        return currentGrade;
+    }
+
+    public double letterToNumericGrade(String letterGrade){
+        double grade = 0;
+        switch(letterGrade){
+            case "A" :
+                grade = 93;
+            case "A-" :
+                grade = 90;
+            case "B+" :
+                grade = 87;
+            case "B" :
+                grade = 83;
+            case "B-" :
+                grade = 80;
+            case "C+" :
+                grade = 77;
+            case "C" :
+                grade = 73;
+            case "C-" :
+                grade = 70;
+            case "D" :
+                grade = 65;
+            case "D-" :
+                grade = 60;
+        }
+        return grade;
     }
 
 }

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import group5.caniskipclass.persistence.CanISkipClassContract;
 import group5.caniskipclass.persistence.CanISkipClassDbHelper;
@@ -19,15 +18,30 @@ public class Course {
     private String name;
     private double weight;
     private long id;
-    private int numAbscence;
+
+    private int numSkips;
     private int numAllowedAbsence;
     private double currentGrade;
     private String minimumGrade;
 
-    public Course(String name, String minimumGrade, int numAllowedAbsence) {
+
+    private int percentLostForSkip;
+
+    public Course(String name, String minimumGrade, int numAllowedAbsence, int percentLostForSkip) {
         this.name = name;
         this.numAllowedAbsence = numAllowedAbsence;
         this.minimumGrade = minimumGrade;
+        this.percentLostForSkip = percentLostForSkip;
+        this.numSkips = 0;
+        this.id = 0;
+    }
+
+    public Course(String name, String minimumGrade, int numAllowedAbsence, int percentLostForSkip, int numSkips) {
+        this.name = name;
+        this.numAllowedAbsence = numAllowedAbsence;
+        this.minimumGrade = minimumGrade;
+        this.percentLostForSkip = percentLostForSkip;
+        this.numSkips = numSkips;
         this.id = 0;
     }
 
@@ -43,8 +57,12 @@ public class Course {
         return name;
     }
 
-    public int getNumAbscence() {
-        return numAbscence;
+    public int getNumSkips() {
+        return numSkips;
+    }
+
+    public void setNumSkips(int numSkips) {
+        this.numSkips = numSkips;
     }
 
     public int getNumAllowedAbsence() {
@@ -58,6 +76,10 @@ public class Course {
     public String getMinimumGrade() {
         return minimumGrade;
     }
+
+    public int getPercentLostForSkip() { return percentLostForSkip; }
+
+    public void setPercentLostForSkip(int percentLostForSkip) { this.percentLostForSkip = percentLostForSkip; }
 
     private ArrayList<Category> categories;
 

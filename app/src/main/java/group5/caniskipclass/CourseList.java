@@ -55,11 +55,12 @@ public class CourseList {
             int id = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry._ID));
             String minGrade = c.getString(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_MIN_GRADE));
             int numAllowedAbsences = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE));
-            Course nc = new Course(name, minGrade, numAllowedAbsences);
+            int percentLostForSkip = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_LOSS_FOR_SKIP));
+            int numSkips = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_SKIPS));
+            Course nc = new Course(name, minGrade, numAllowedAbsences, percentLostForSkip, numSkips);
             nc.setId(id);
             courses.add(nc);
             c.moveToNext();
-
         }
 
         c.close();
@@ -75,6 +76,8 @@ public class CourseList {
         values.put(CanISkipClassContract.CourseEntry.COLUMN_NAME_NAME, newCourse.getName());
         values.put(CanISkipClassContract.CourseEntry.COLUMN_NAME_MIN_GRADE, newCourse.getMinimumGrade());
         values.put(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE, newCourse.getNumAllowedAbsence());
+        values.put(CanISkipClassContract.CourseEntry.COLUMN_NAME_LOSS_FOR_SKIP, newCourse.getPercentLostForSkip());
+        values.put(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_SKIPS, newCourse.getNumSkips());
 
         long newRowId;
         newRowId = db.insert(
@@ -115,7 +118,8 @@ public class CourseList {
             int cid = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry._ID));
             String minGrade = c.getString(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_MIN_GRADE));
             int numAllowedAbsences = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE));
-            Course nc = new Course(name, minGrade, numAllowedAbsences);
+            int percentLostForSkip = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_LOSS_FOR_SKIP));
+            Course nc = new Course(name, minGrade, numAllowedAbsences, percentLostForSkip);
             nc.setId(cid);
             c.close();
 
