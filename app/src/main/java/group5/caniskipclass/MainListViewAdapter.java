@@ -121,6 +121,23 @@ public class MainListViewAdapter extends BaseAdapter {
                                 db.update(CanISkipClassContract.CourseEntry.TABLE_NAME, updateVals, where, new String[]{String.valueOf(course.getId())});
                                 course.setNumSkips(numSkips++);
                                 Log.d(TAG, "Number of skips after update: " + course.getNumSkips());
+                                new AlertDialog.Builder(context)
+                                        .setTitle("What to do instead...")
+                                        .setMessage(
+                                                "Now that you've skipped class, you can:\n" +
+                                                        " - Sleep\n" +
+                                                        " - Eat Food\n" +
+                                                        " - Take a Walk\n" +
+                                                        " - Go to the Gym\n" +
+                                                        " - Or Whatever You Want..."
+                                        )
+                                        .setNeutralButton("Ok!", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .show();
                             }
                         })
 
