@@ -30,7 +30,9 @@ public class CanISkipClassDbHelper extends SQLiteOpenHelper {
                     CourseEntry._ID + " INTEGER PRIMARY KEY," +
                     CourseEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     CourseEntry.COLUMN_NAME_MIN_GRADE + TEXT_TYPE + COMMA_SEP +
-                    CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE + INTEGER_TYPE +
+                    CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE + INTEGER_TYPE + COMMA_SEP +
+                    CourseEntry.COLUMN_NAME_LOSS_FOR_SKIP + INTEGER_TYPE + COMMA_SEP +
+                    CourseEntry.COLUMN_NAME_NUM_SKIPS + INTEGER_TYPE +
                     " )";
     private static final String SQL_CREATE_ASSIGNMENT_TABLE =
             "CREATE TABLE " + AssignmentEntry.TABLE_NAME + " (" +

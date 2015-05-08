@@ -66,10 +66,11 @@ public class AddCourseActivity extends ActionBarActivity {
         EditText cName = ((EditText) findViewById(R.id.course_name));
         Spinner minGrade = ((Spinner) findViewById(R.id.grades_spinner));
         EditText allowedAbsences = ((EditText) findViewById(R.id.allowed_absences));
+        EditText skipLost = ((EditText) findViewById(R.id.skip_loss));
 
 
         // validate the fields
-        if (cName.getText().length() == 0 || minGrade.getSelectedItem() == null || allowedAbsences.getText().length() == 0  ) {
+        if (cName.getText().length() == 0 || minGrade.getSelectedItem() == null || allowedAbsences.getText().length() == 0 || skipLost.getText().length() == 0 ) {
             new AlertDialog.Builder(this)
                     .setTitle("Incomplete Fields")
                     .setMessage("Please fill in all fields before submitting.")
@@ -84,7 +85,8 @@ public class AddCourseActivity extends ActionBarActivity {
 
             Course newCourse = new Course(cName.getText().toString(),
                     minGrade.getSelectedItem().toString(),
-                    Integer.parseInt(allowedAbsences.getText().toString()));
+                    Integer.parseInt(allowedAbsences.getText().toString()),
+                    Integer.parseInt(skipLost.getText().toString()));
 
             CourseList.getInstance(this).addNewCourse(newCourse);
 

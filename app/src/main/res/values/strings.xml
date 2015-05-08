@@ -6,6 +6,7 @@
     <string name="action_add">Add</string>
     <string name="title_activity_crud_course">Add/Edit Course</string>
     <string name="course_name_label">Course Name: </string>
+    <string name="percent_lost_for_skip_label">Percent Lost for Skipping: </string>
     <string name="course_min_grade_label">Minimum Grade: </string>
     <string name="course_edit_confirm">Confirm</string>
     <string name="enter_course_hint">Enter Course Name</string>

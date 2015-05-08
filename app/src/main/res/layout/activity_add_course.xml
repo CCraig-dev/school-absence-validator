@@ -37,19 +37,34 @@
     </LinearLayout>
     <!-- Course Allowed Absence -->
     <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView android:text="@string/allowed_absences_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/allowed_absences"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:inputType="number"
+    />
+</LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView android:text="@string/allowed_absences_label"
+        <TextView android:text="@string/percent_lost_for_skip_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
-            android:id="@+id/allowed_absences"
+            android:id="@+id/skip_loss"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
             />
 
     </LinearLayout>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

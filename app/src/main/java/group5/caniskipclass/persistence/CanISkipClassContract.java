@@ -13,6 +13,8 @@ public final class CanISkipClassContract {
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_MIN_GRADE = "min_grade";
         public static final String COLUMN_NAME_NUM_ALLOWED_ABSENCE = "num_allowed_absence";
+        public static final String COLUMN_NAME_LOSS_FOR_SKIP = "loss_for_skip";
+        public static final String COLUMN_NAME_NUM_SKIPS = "num_skips";
     }
 
     public static abstract class AssignmentEntry implements BaseColumns {
