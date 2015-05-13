@@ -67,6 +67,7 @@ public class AddCourseActivity extends ActionBarActivity {
         Spinner minGrade = ((Spinner) findViewById(R.id.grades_spinner));
         EditText allowedAbsences = ((EditText) findViewById(R.id.allowed_absences));
         EditText skipLost = ((EditText) findViewById(R.id.skip_loss));
+        EditText professorName = ((EditText) findViewById(R.id.professor_name));
 
 
         // validate the fields
@@ -86,7 +87,8 @@ public class AddCourseActivity extends ActionBarActivity {
             Course newCourse = new Course(cName.getText().toString(),
                     minGrade.getSelectedItem().toString(),
                     Integer.parseInt(allowedAbsences.getText().toString()),
-                    Integer.parseInt(skipLost.getText().toString()));
+                    Integer.parseInt(skipLost.getText().toString()),
+                    professorName.getText().toString());
 
             CourseList.getInstance(this).addNewCourse(newCourse);
 

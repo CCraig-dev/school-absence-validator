@@ -11,6 +11,7 @@
     <string name="course_edit_confirm">Confirm</string>
     <string name="enter_course_hint">Enter Course Name</string>
     <string name="allowed_absences_label">Allowed Absences: </string>
+    <string name="professor_name">Professor Last Name: </string>
     <string name="title_activity_course_detail">CourseDetailActivity</string>
     <string name="add_assignment">Add Assignment</string>
     <string name="title_activity_add_assignment">AddAssignmentActivity</string>

@@ -23,16 +23,18 @@ public class Course {
     private int numAllowedAbsence;
     private double currentGrade;
     private String minimumGrade;
+    private String professorName;
 
 
     private int percentLostForSkip;
 
-    public Course(String name, String minimumGrade, int numAllowedAbsence, int percentLostForSkip) {
+    public Course(String name, String minimumGrade, int numAllowedAbsence, int percentLostForSkip, String professorName) {
         this.name = name;
         this.numAllowedAbsence = numAllowedAbsence;
         this.minimumGrade = minimumGrade;
         this.percentLostForSkip = percentLostForSkip;
         this.numSkips = 0;
+        this.professorName = professorName;
         this.id = 0;
     }
 
@@ -80,6 +82,10 @@ public class Course {
     public int getPercentLostForSkip() { return percentLostForSkip; }
 
     public void setPercentLostForSkip(int percentLostForSkip) { this.percentLostForSkip = percentLostForSkip; }
+
+    public String getProfessorName() { return professorName; }
+
+    public void setProfessorName(String professorName) { this.professorName = professorName; }
 
     private ArrayList<Category> categories;
 

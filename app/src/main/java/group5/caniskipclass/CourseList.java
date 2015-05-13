@@ -57,6 +57,7 @@ public class CourseList {
             int numAllowedAbsences = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE));
             int percentLostForSkip = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_LOSS_FOR_SKIP));
             int numSkips = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_SKIPS));
+            String professorName = c.getString(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_PROFESSOR_NAME));
             Course nc = new Course(name, minGrade, numAllowedAbsences, percentLostForSkip, numSkips);
             nc.setId(id);
             courses.add(nc);
@@ -78,6 +79,7 @@ public class CourseList {
         values.put(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE, newCourse.getNumAllowedAbsence());
         values.put(CanISkipClassContract.CourseEntry.COLUMN_NAME_LOSS_FOR_SKIP, newCourse.getPercentLostForSkip());
         values.put(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_SKIPS, newCourse.getNumSkips());
+        values.put(CanISkipClassContract.CourseEntry.COLUMN_NAME_PROFESSOR_NAME, newCourse.getProfessorName());
 
         long newRowId;
         newRowId = db.insert(
@@ -119,7 +121,8 @@ public class CourseList {
             String minGrade = c.getString(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_MIN_GRADE));
             int numAllowedAbsences = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_NUM_ALLOWED_ABSENCE));
             int percentLostForSkip = c.getInt(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_LOSS_FOR_SKIP));
-            Course nc = new Course(name, minGrade, numAllowedAbsences, percentLostForSkip);
+            String professorName = c.getString(c.getColumnIndex(CanISkipClassContract.CourseEntry.COLUMN_NAME_PROFESSOR_NAME));
+            Course nc = new Course(name, minGrade, numAllowedAbsences, percentLostForSkip, professorName);
             nc.setId(cid);
             c.close();
 
